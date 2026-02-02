@@ -1,0 +1,181 @@
+/**
+ * ==========================================================================
+ * COLLECTION PAGE STYLES
+ * ==========================================================================
+ * Matching Ritual theme's collection page design
+ */
+
+/* Collection Page Layout */
+.collection-page {
+  padding: var(--spacing-8) var(--spacing-4);
+}
+
+@media (min-width: 750px) {
+  .collection-page {
+    padding: var(--spacing-8) var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .collection-page {
+    padding: var(--spacing-12);
+  }
+}
+
+.collection-page__inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+/* Collection Header */
+.collection-page__header {
+  text-align: center;
+  margin-bottom: var(--spacing-12);
+}
+
+.collection-page__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: 1;
+  margin: 0 0 var(--spacing-4);
+}
+
+.collection-page__description {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  line-height: var(--line-height-paragraph);
+  max-width: 60ch;
+  margin: 0 auto;
+  opacity: 0.8;
+}
+
+/* Collection Filters */
+.collection-page__filters {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-8);
+  padding-bottom: var(--spacing-4);
+  border-bottom: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.collection-page__filter-count {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.6;
+}
+
+.collection-page__sort {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.collection-page__sort-label {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.6;
+}
+
+.collection-page__sort-select {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  background-color: transparent;
+  border: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.2);
+  cursor: pointer;
+}
+
+/* Products Grid */
+.collection-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+}
+
+@media (min-width: 750px) {
+  .collection-page__grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .collection-page__grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Pagination */
+.collection-page__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-12);
+  padding-top: var(--spacing-8);
+  border-top: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.collection-page__pagination-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+  text-decoration: none;
+  border: var(--border-width-thin) solid var(--color-foreground);
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+.collection-page__pagination-link:hover {
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+}
+
+/* Legacy Collection Styles (for existing markup) */
+.collection {
+  padding: var(--spacing-8) var(--spacing-4);
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+@media (min-width: 750px) {
+  .collection {
+    padding: var(--spacing-8) var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .collection {
+    padding: var(--spacing-12);
+  }
+}
+
+.collection h1 {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(2rem, 6vw, 4rem);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  line-height: 1;
+  margin: 0 0 var(--spacing-4);
+  text-align: center;
+}
+
+.collection-description {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  line-height: var(--line-height-paragraph);
+  max-width: 60ch;
+  margin: 0 auto var(--spacing-12);
+  text-align: center;
+  opacity: 0.8;
+}

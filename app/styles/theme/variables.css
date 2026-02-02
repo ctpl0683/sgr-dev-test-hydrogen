@@ -1,0 +1,298 @@
+/**
+ * ==========================================================================
+ * RITUAL THEME - CSS CUSTOM PROPERTIES (Design Tokens)
+ * ==========================================================================
+ * Based on the exported Shopify Ritual theme settings
+ * This file contains all design tokens for typography, colors, spacing, etc.
+ * 
+ * NOTE: Fonts are loaded via Google Fonts in root.jsx
+ * - Geist: Body & Subheading font
+ * - Chivo: Heading & Accent font
+ */
+
+:root {
+  /* Font Families
+   * Using Inter as body font (similar to Geist)
+   * Using Chivo as heading font (matches theme)
+   */
+  --font-body-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-body-style: normal;
+  --font-body-weight: 400;
+  --font-body-weight-bold: 700;
+
+  --font-heading-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-heading-style: normal;
+  --font-heading-weight: 700;
+
+  --font-subheading-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-subheading-style: normal;
+  --font-subheading-weight: 400;
+
+  --font-accent-family: 'Chivo', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --font-accent-style: normal;
+  --font-accent-weight: 700;
+
+  /* Fallback system font stack */
+  --font-system: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+
+  /* ==========================================================================
+     2. TYPOGRAPHY - Font Sizes (from theme settings)
+     ========================================================================== */
+
+  /* Base font size */
+  --font-size-base: 14px;
+  --font-size-base-rem: 0.875rem;
+
+  /* Heading sizes - Desktop */
+  --font-size-h1: 72px;
+  --font-size-h2: 48px;
+  --font-size-h3: 32px;
+  --font-size-h4: 24px;
+  --font-size-h5: 18px;
+  --font-size-h6: 16px;
+  --font-size-paragraph: 14px;
+
+  /* Heading sizes - Mobile (fluid scaling) */
+  --font-size-h1-mobile: clamp(36px, 8vw, 72px);
+  --font-size-h2-mobile: clamp(28px, 6vw, 48px);
+  --font-size-h3-mobile: clamp(24px, 5vw, 32px);
+  --font-size-h4-mobile: clamp(20px, 4vw, 24px);
+
+  /* ==========================================================================
+     3. TYPOGRAPHY - Line Heights
+     ========================================================================== */
+
+  --line-height-tight: 1;
+  --line-height-snug: 1.15;
+  --line-height-normal: 1.25;
+  --line-height-relaxed: 1.4;
+  --line-height-loose: 1.6;
+
+  /* Specific line heights */
+  --line-height-heading: 1.1;
+  --line-height-body: 1.5;
+
+  /* ==========================================================================
+     4. TYPOGRAPHY - Letter Spacing
+     ========================================================================== */
+
+  --letter-spacing-tighter: -0.03em;
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.06em;
+  --letter-spacing-wider: 0.13em;
+
+  /* ==========================================================================
+     5. TYPOGRAPHY - Heading Spacing (margins)
+     ========================================================================== */
+
+  --font-h1-spacing: 0.25em;
+  --font-h2-spacing: 0.25em;
+  --font-h3-spacing: 0.25em;
+  --font-h4-spacing: 0.25em;
+  --font-h5-spacing: 0.25em;
+  --font-h6-spacing: 0.25em;
+  --font-paragraph-spacing: 0.5em;
+
+  /* ==========================================================================
+     6. LAYOUT - Page Widths
+     ========================================================================== */
+
+  --page-width-narrow: 90rem;   /* 1440px */
+  --page-width-normal: 120rem;  /* 1920px */
+  --page-width-wide: 150rem;    /* 2400px - theme default */
+  --page-width: var(--page-width-wide);
+
+  /* Content widths */
+  --content-width-narrow: 36rem;  /* 576px */
+  --content-width-normal: 42rem;  /* 672px */
+  --content-width-wide: 46rem;    /* 736px */
+
+  /* Sidebar width */
+  --sidebar-width: 25rem;  /* 400px */
+
+  /* ==========================================================================
+     7. LAYOUT - Section Heights
+     ========================================================================== */
+
+  --section-height-small: 15rem;
+  --section-height-medium: 25rem;
+  --section-height-large: 35rem;
+
+  /* ==========================================================================
+     8. LAYOUT - Spacing Scale
+     ========================================================================== */
+
+  --spacing-0: 0;
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.25rem;   /* 20px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-10: 2.5rem;   /* 40px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-20: 5rem;     /* 80px */
+  --spacing-24: 6rem;     /* 96px */
+
+  /* ==========================================================================
+     9. LAYOUT - Grid Gap
+     ========================================================================== */
+
+  --grid-gap-xs: 4px;
+  --grid-gap-sm: 8px;
+  --grid-gap-md: 12px;
+  --grid-gap-lg: 16px;
+  --grid-gap-xl: 24px;
+  --grid-gap-2xl: 32px;
+  --grid-gap-3xl: 48px;
+
+  /* ==========================================================================
+     10. BORDERS & RADIUS
+     ========================================================================== */
+
+  --border-width-thin: 1px;
+  --border-width-medium: 1.5px;
+  --border-width-thick: 2px;
+
+  /* Border radius - Theme uses 0 (sharp corners) */
+  --border-radius-none: 0;
+  --border-radius-sm: 2px;
+  --border-radius-md: 4px;
+  --border-radius-lg: 8px;
+  --border-radius-xl: 12px;
+  --border-radius-full: 9999px;
+
+  /* Theme default - sharp corners */
+  --border-radius-button: 0;
+  --border-radius-input: 0;
+  --border-radius-card: 0;
+  --border-radius-image: 0;
+
+  /* ==========================================================================
+     11. SHADOWS
+     ========================================================================== */
+
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+  --shadow-drawer: 0px 4px 20px rgb(0 0 0 / 0.15);
+  --shadow-popover: 0px 4px 20px rgb(0 0 0 / 0.15);
+
+  /* ==========================================================================
+     12. Z-INDEX LAYERING
+     ========================================================================== */
+
+  --layer-section-background: -2;
+  --layer-lowest: -1;
+  --layer-base: 0;
+  --layer-flat: 1;
+  --layer-raised: 2;
+  --layer-heightened: 4;
+  --layer-sticky: 8;
+  --layer-window-overlay: 10;
+  --layer-header-menu: 12;
+  --layer-overlay: 16;
+  --layer-menu-drawer: 18;
+  --layer-temporary: 20;
+  --layer-modal: 100;
+
+  /* ==========================================================================
+     13. TRANSITIONS & ANIMATIONS
+     ========================================================================== */
+
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-normal: 200ms;
+  --duration-slow: 300ms;
+  --duration-slower: 400ms;
+
+  --ease-default: ease;
+  --ease-in: ease-in;
+  --ease-out: ease-out;
+  --ease-in-out: ease-in-out;
+
+  /* ==========================================================================
+     14. COMPONENT-SPECIFIC VARIABLES
+     ========================================================================== */
+
+  /* Header */
+  --header-height: 64px;
+  --header-height-compact: 56px;
+  --header-height-mobile: 56px;
+
+  /* Aside/Drawer */
+  --aside-width: 400px;
+  --aside-width-mobile: 100vw;
+
+  /* Cart */
+  --cart-aside-summary-height: 250px;
+  --cart-aside-summary-height-with-discount: 300px;
+
+  /* Product Grid */
+  --product-card-gap: 4px;
+  --product-grid-columns: 4;
+  --product-grid-columns-mobile: 2;
+
+  /* ==========================================================================
+     15. OPACITY SCALE
+     ========================================================================== */
+
+  --opacity-0: 0;
+  --opacity-5: 0.05;
+  --opacity-10: 0.1;
+  --opacity-15: 0.15;
+  --opacity-20: 0.2;
+  --opacity-25: 0.25;
+  --opacity-30: 0.3;
+  --opacity-40: 0.4;
+  --opacity-50: 0.5;
+  --opacity-60: 0.6;
+  --opacity-70: 0.7;
+  --opacity-80: 0.8;
+  --opacity-90: 0.9;
+  --opacity-100: 1;
+
+  /* Dynamic opacity (adjusts based on background brightness) */
+  --opacity-5-15: 0.05;
+  --opacity-10-25: 0.1;
+  --opacity-35-55: 0.35;
+  --opacity-40-60: 0.40;
+  --opacity-30-60: 0.30;
+
+  /* ==========================================================================
+     16. MAX-WIDTH / MEASURE (for text readability)
+     ========================================================================== */
+
+  --max-width-body-normal: 32.5em;
+  --max-width-body-narrow: 22.75em;
+  --max-width-heading-normal: 32.5em;
+  --max-width-heading-narrow: 19.5em;
+  --max-width-display-normal: 13em;
+  --max-width-display-narrow: 9.75em;
+  --max-width-display-tight: 3.25em;
+}
+
+/* ==========================================================================
+   RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+@media screen and (min-width: 40em) {
+  :root {
+    --section-height-small: 40svh;
+    --section-height-medium: 55svh;
+    --section-height-large: 70svh;
+  }
+}
+
+@media screen and (min-width: 60em) {
+  :root {
+    --section-height-small: 50svh;
+    --section-height-medium: 65svh;
+    --section-height-large: 80svh;
+  }
+}

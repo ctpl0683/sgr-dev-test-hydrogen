@@ -1,0 +1,120 @@
+/**
+ * ==========================================================================
+ * COLLECTION GRID SECTION STYLES
+ * ==========================================================================
+ * Matching Ritual theme's collection-list section
+ */
+
+.collection-grid-section {
+  padding: var(--spacing-12) var(--spacing-4);
+}
+
+@media (min-width: 750px) {
+  .collection-grid-section {
+    padding: var(--spacing-12) var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .collection-grid-section {
+    padding: var(--spacing-12);
+  }
+}
+
+.collection-grid-section__inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+.collection-grid-section__heading {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: var(--font-size-h2);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  margin-bottom: var(--spacing-8);
+  text-align: center;
+}
+
+/* Grid */
+.collection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-4);
+}
+
+@media (min-width: 750px) {
+  .collection-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .collection-grid {
+    grid-template-columns: repeat(var(--columns, 4), 1fr);
+  }
+}
+
+/* Collection Card */
+.collection-card {
+  display: block;
+  text-decoration: none;
+  color: var(--color-foreground);
+}
+
+.collection-card__image-wrapper {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  margin-bottom: var(--spacing-4);
+}
+
+.collection-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--duration-slow) var(--ease-out);
+}
+
+.collection-card:hover .collection-card__image {
+  transform: scale(1.03);
+}
+
+.collection-card__placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.collection-card__content {
+  text-align: center;
+}
+
+.collection-card__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin: 0 0 var(--spacing-2);
+}
+
+@media (min-width: 750px) {
+  .collection-card__title {
+    font-size: 1.125rem;
+  }
+}
+
+.collection-card__description {
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.7;
+  margin: 0;
+  display: none;
+}
+
+@media (min-width: 750px) {
+  .collection-card__description {
+    display: block;
+  }
+}

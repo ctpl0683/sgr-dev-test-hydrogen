@@ -1,0 +1,639 @@
+/**
+ * ==========================================================================
+ * RITUAL THEME - LAYOUT SYSTEM
+ * ==========================================================================
+ * Layout utilities, containers, grid system, and spacing
+ * Based on the exported Shopify Ritual theme settings
+ */
+
+/* ==========================================================================
+   CONTAINER / PAGE WIDTH
+   ========================================================================== */
+
+.page-width {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@media screen and (min-width: 750px) {
+  .page-width {
+    padding-inline: var(--spacing-6);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .page-width {
+    padding-inline: var(--spacing-12);
+  }
+}
+
+.page-width--narrow {
+  max-width: var(--page-width-narrow);
+}
+
+.page-width--normal {
+  max-width: var(--page-width-normal);
+}
+
+.page-width--wide {
+  max-width: var(--page-width-wide);
+}
+
+.full-width {
+  width: 100%;
+  max-width: none;
+  padding-inline: 0;
+}
+
+/* Content width constraints */
+.content-width {
+  max-width: var(--content-width-normal);
+}
+
+.content-width--narrow {
+  max-width: var(--content-width-narrow);
+}
+
+.content-width--wide {
+  max-width: var(--content-width-wide);
+}
+
+/* ==========================================================================
+   SECTION WRAPPER
+   ========================================================================== */
+
+.section {
+  position: relative;
+}
+
+.section--page-width {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-4);
+}
+
+@media screen and (min-width: 750px) {
+  .section--page-width {
+    padding-inline: var(--spacing-6);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .section--page-width {
+    padding-inline: var(--spacing-12);
+  }
+}
+
+.section--full-width {
+  width: 100%;
+  max-width: none;
+}
+
+/* Section background (for color schemes) */
+.section-background {
+  position: absolute;
+  inset: 0;
+  z-index: var(--layer-section-background);
+}
+
+/* ==========================================================================
+   SECTION HEIGHTS
+   ========================================================================== */
+
+.section-height--small {
+  min-height: var(--section-height-small);
+}
+
+.section-height--medium {
+  min-height: var(--section-height-medium);
+}
+
+.section-height--large {
+  min-height: var(--section-height-large);
+}
+
+.section-height--full {
+  min-height: 100vh;
+  min-height: 100svh;
+}
+
+/* ==========================================================================
+   SECTION PADDING
+   ========================================================================== */
+
+.section-padding {
+  padding-block: var(--spacing-8);
+}
+
+@media screen and (min-width: 750px) {
+  .section-padding {
+    padding-block: var(--spacing-12);
+  }
+}
+
+.section-padding--small {
+  padding-block: var(--spacing-4);
+}
+
+@media screen and (min-width: 750px) {
+  .section-padding--small {
+    padding-block: var(--spacing-6);
+  }
+}
+
+.section-padding--large {
+  padding-block: var(--spacing-12);
+}
+
+@media screen and (min-width: 750px) {
+  .section-padding--large {
+    padding-block: var(--spacing-16);
+  }
+}
+
+.section-padding--none {
+  padding-block: 0;
+}
+
+/* ==========================================================================
+   FLEXBOX UTILITIES
+   ========================================================================== */
+
+.flex {
+  display: flex;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.flex-row-reverse {
+  flex-direction: row-reverse;
+}
+
+.flex-col-reverse {
+  flex-direction: column-reverse;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
+}
+
+.flex-none {
+  flex: none;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.grow-0 {
+  flex-grow: 0;
+}
+
+.shrink {
+  flex-shrink: 1;
+}
+
+.shrink-0 {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   ALIGNMENT UTILITIES
+   ========================================================================== */
+
+/* Justify Content */
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
+}
+
+/* Align Items */
+.items-start {
+  align-items: flex-start;
+}
+
+.items-end {
+  align-items: flex-end;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.items-baseline {
+  align-items: baseline;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+/* Align Self */
+.self-auto {
+  align-self: auto;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.self-end {
+  align-self: flex-end;
+}
+
+.self-center {
+  align-self: center;
+}
+
+.self-stretch {
+  align-self: stretch;
+}
+
+/* ==========================================================================
+   GAP UTILITIES
+   ========================================================================== */
+
+.gap-0 {
+  gap: 0;
+}
+
+.gap-1 {
+  gap: var(--spacing-1);
+}
+
+.gap-2 {
+  gap: var(--spacing-2);
+}
+
+.gap-3 {
+  gap: var(--spacing-3);
+}
+
+.gap-4 {
+  gap: var(--spacing-4);
+}
+
+.gap-5 {
+  gap: var(--spacing-5);
+}
+
+.gap-6 {
+  gap: var(--spacing-6);
+}
+
+.gap-8 {
+  gap: var(--spacing-8);
+}
+
+.gap-10 {
+  gap: var(--spacing-10);
+}
+
+.gap-12 {
+  gap: var(--spacing-12);
+}
+
+/* ==========================================================================
+   GRID SYSTEM
+   ========================================================================== */
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.grid-cols-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.grid-cols-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.grid-cols-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.grid-cols-5 {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.grid-cols-6 {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+/* Responsive grid columns */
+@media screen and (min-width: 750px) {
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .md\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .lg\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-4 {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-5 {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .lg\:grid-cols-6 {
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
+}
+
+/* ==========================================================================
+   SPACING UTILITIES - Margin
+   ========================================================================== */
+
+.m-0 { margin: 0; }
+.m-1 { margin: var(--spacing-1); }
+.m-2 { margin: var(--spacing-2); }
+.m-3 { margin: var(--spacing-3); }
+.m-4 { margin: var(--spacing-4); }
+.m-6 { margin: var(--spacing-6); }
+.m-8 { margin: var(--spacing-8); }
+.m-auto { margin: auto; }
+
+.mx-auto { margin-inline: auto; }
+.my-auto { margin-block: auto; }
+
+.mt-0 { margin-top: 0; }
+.mt-1 { margin-top: var(--spacing-1); }
+.mt-2 { margin-top: var(--spacing-2); }
+.mt-3 { margin-top: var(--spacing-3); }
+.mt-4 { margin-top: var(--spacing-4); }
+.mt-6 { margin-top: var(--spacing-6); }
+.mt-8 { margin-top: var(--spacing-8); }
+.mt-12 { margin-top: var(--spacing-12); }
+
+.mb-0 { margin-bottom: 0; }
+.mb-1 { margin-bottom: var(--spacing-1); }
+.mb-2 { margin-bottom: var(--spacing-2); }
+.mb-3 { margin-bottom: var(--spacing-3); }
+.mb-4 { margin-bottom: var(--spacing-4); }
+.mb-6 { margin-bottom: var(--spacing-6); }
+.mb-8 { margin-bottom: var(--spacing-8); }
+.mb-12 { margin-bottom: var(--spacing-12); }
+
+.ml-0 { margin-left: 0; }
+.ml-auto { margin-left: auto; }
+
+.mr-0 { margin-right: 0; }
+.mr-auto { margin-right: auto; }
+
+/* ==========================================================================
+   SPACING UTILITIES - Padding
+   ========================================================================== */
+
+.p-0 { padding: 0; }
+.p-1 { padding: var(--spacing-1); }
+.p-2 { padding: var(--spacing-2); }
+.p-3 { padding: var(--spacing-3); }
+.p-4 { padding: var(--spacing-4); }
+.p-6 { padding: var(--spacing-6); }
+.p-8 { padding: var(--spacing-8); }
+
+.px-0 { padding-inline: 0; }
+.px-1 { padding-inline: var(--spacing-1); }
+.px-2 { padding-inline: var(--spacing-2); }
+.px-3 { padding-inline: var(--spacing-3); }
+.px-4 { padding-inline: var(--spacing-4); }
+.px-6 { padding-inline: var(--spacing-6); }
+.px-8 { padding-inline: var(--spacing-8); }
+
+.py-0 { padding-block: 0; }
+.py-1 { padding-block: var(--spacing-1); }
+.py-2 { padding-block: var(--spacing-2); }
+.py-3 { padding-block: var(--spacing-3); }
+.py-4 { padding-block: var(--spacing-4); }
+.py-6 { padding-block: var(--spacing-6); }
+.py-8 { padding-block: var(--spacing-8); }
+.py-12 { padding-block: var(--spacing-12); }
+
+.pt-0 { padding-top: 0; }
+.pt-4 { padding-top: var(--spacing-4); }
+.pt-6 { padding-top: var(--spacing-6); }
+.pt-8 { padding-top: var(--spacing-8); }
+.pt-12 { padding-top: var(--spacing-12); }
+
+.pb-0 { padding-bottom: 0; }
+.pb-4 { padding-bottom: var(--spacing-4); }
+.pb-6 { padding-bottom: var(--spacing-6); }
+.pb-8 { padding-bottom: var(--spacing-8); }
+.pb-12 { padding-bottom: var(--spacing-12); }
+
+/* ==========================================================================
+   WIDTH & HEIGHT UTILITIES
+   ========================================================================== */
+
+.w-full { width: 100%; }
+.w-auto { width: auto; }
+.w-fit { width: fit-content; }
+.w-screen { width: 100vw; }
+
+.min-w-0 { min-width: 0; }
+.min-w-full { min-width: 100%; }
+
+.max-w-none { max-width: none; }
+.max-w-full { max-width: 100%; }
+.max-w-screen { max-width: 100vw; }
+
+.h-full { height: 100%; }
+.h-auto { height: auto; }
+.h-fit { height: fit-content; }
+.h-screen { height: 100vh; height: 100svh; }
+
+.min-h-0 { min-height: 0; }
+.min-h-full { min-height: 100%; }
+.min-h-screen { min-height: 100vh; min-height: 100svh; }
+
+/* ==========================================================================
+   POSITION UTILITIES
+   ========================================================================== */
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed { position: fixed; }
+.sticky { position: sticky; }
+.static { position: static; }
+
+.inset-0 { inset: 0; }
+.top-0 { top: 0; }
+.right-0 { right: 0; }
+.bottom-0 { bottom: 0; }
+.left-0 { left: 0; }
+
+/* ==========================================================================
+   Z-INDEX UTILITIES
+   ========================================================================== */
+
+.z-base { z-index: var(--layer-base); }
+.z-flat { z-index: var(--layer-flat); }
+.z-raised { z-index: var(--layer-raised); }
+.z-sticky { z-index: var(--layer-sticky); }
+.z-overlay { z-index: var(--layer-overlay); }
+.z-modal { z-index: var(--layer-modal); }
+
+/* ==========================================================================
+   OVERFLOW UTILITIES
+   ========================================================================== */
+
+.overflow-auto { overflow: auto; }
+.overflow-hidden { overflow: hidden; }
+.overflow-visible { overflow: visible; }
+.overflow-scroll { overflow: scroll; }
+
+.overflow-x-auto { overflow-x: auto; }
+.overflow-x-hidden { overflow-x: hidden; }
+.overflow-y-auto { overflow-y: auto; }
+.overflow-y-hidden { overflow-y: hidden; }
+
+/* ==========================================================================
+   DISPLAY UTILITIES
+   ========================================================================== */
+
+.block { display: block; }
+.inline-block { display: inline-block; }
+.inline { display: inline; }
+.hidden { display: none; }
+.contents { display: contents; }
+
+/* Responsive display */
+@media screen and (max-width: 749px) {
+  .mobile\:hidden { display: none; }
+  .mobile\:block { display: block; }
+  .mobile\:flex { display: flex; }
+}
+
+@media screen and (min-width: 750px) {
+  .desktop\:hidden { display: none; }
+  .desktop\:block { display: block; }
+  .desktop\:flex { display: flex; }
+}
+
+/* ==========================================================================
+   VISIBILITY UTILITIES
+   ========================================================================== */
+
+.visible { visibility: visible; }
+.invisible { visibility: hidden; }
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==========================================================================
+   ASPECT RATIO UTILITIES
+   ========================================================================== */
+
+.aspect-auto { aspect-ratio: auto; }
+.aspect-square { aspect-ratio: 1 / 1; }
+.aspect-video { aspect-ratio: 16 / 9; }
+.aspect-portrait { aspect-ratio: 3 / 4; }
+.aspect-landscape { aspect-ratio: 4 / 3; }
+
+/* Custom aspect ratios from theme */
+.aspect-product { aspect-ratio: 1 / 1.25; }
+.aspect-collection { aspect-ratio: 4 / 5; }
+
+/* ==========================================================================
+   OBJECT FIT UTILITIES
+   ========================================================================== */
+
+.object-contain { object-fit: contain; }
+.object-cover { object-fit: cover; }
+.object-fill { object-fit: fill; }
+.object-none { object-fit: none; }
+.object-scale-down { object-fit: scale-down; }
+
+.object-center { object-position: center; }
+.object-top { object-position: top; }
+.object-bottom { object-position: bottom; }
+
+/* ==========================================================================
+   POINTER EVENTS & CURSOR
+   ========================================================================== */
+
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
+
+.cursor-pointer { cursor: pointer; }
+.cursor-default { cursor: default; }
+.cursor-not-allowed { cursor: not-allowed; }
+
+/* ==========================================================================
+   USER SELECT
+   ========================================================================== */
+
+.select-none { user-select: none; }
+.select-text { user-select: text; }
+.select-all { user-select: all; }
+.select-auto { user-select: auto; }

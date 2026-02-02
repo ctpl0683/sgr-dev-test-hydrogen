@@ -1,0 +1,715 @@
+/**
+ * ==========================================================================
+ * RITUAL THEME - BASE COMPONENTS
+ * ==========================================================================
+ * Button, Input, and other base UI component styles
+ * Based on the exported Shopify Ritual theme settings
+ */
+
+/* ==========================================================================
+   BUTTON BASE
+   ========================================================================== */
+
+.button,
+button,
+[type="button"],
+[type="submit"],
+[type="reset"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-6);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  border: var(--border-width-thin) solid transparent;
+  border-radius: var(--border-radius-button);
+  transition: 
+    background-color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    color var(--duration-fast) var(--ease-default);
+}
+
+.button:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+.button:disabled,
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   BUTTON - PRIMARY (Filled)
+   ========================================================================== */
+
+.button,
+.button--primary {
+  color: var(--color-primary-button-text);
+  background-color: var(--color-primary-button-background);
+  border-color: var(--color-primary-button-border);
+}
+
+.button:hover,
+.button--primary:hover {
+  color: var(--color-primary-button-hover-text);
+  background-color: var(--color-primary-button-hover-background);
+  border-color: var(--color-primary-button-hover-border);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   BUTTON - SECONDARY (Outlined)
+   ========================================================================== */
+
+.button--secondary {
+  color: var(--color-secondary-button-text);
+  background-color: var(--color-secondary-button-background);
+  border-color: var(--color-secondary-button-border);
+}
+
+.button--secondary:hover {
+  color: var(--color-secondary-button-hover-text);
+  background-color: var(--color-secondary-button-hover-background);
+  border-color: var(--color-secondary-button-hover-border);
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   BUTTON - LINK STYLE
+   ========================================================================== */
+
+.button--link {
+  padding: 0;
+  color: var(--color-foreground);
+  background-color: transparent;
+  border-color: transparent;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.button--link:hover {
+  color: var(--color-foreground);
+  background-color: transparent;
+  border-color: transparent;
+  text-decoration-thickness: 2px;
+}
+
+/* ==========================================================================
+   BUTTON - UNSTYLED
+   ========================================================================== */
+
+.button--unstyled,
+.button-unstyled {
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button--unstyled:hover,
+.button-unstyled:hover {
+  background: transparent;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   BUTTON - ICON
+   ========================================================================== */
+
+.button--icon {
+  padding: var(--spacing-2);
+  background: transparent;
+  border: none;
+}
+
+.button--icon:hover {
+  background: rgb(var(--color-foreground-rgb) / 0.05);
+}
+
+.button--icon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* ==========================================================================
+   BUTTON SIZES
+   ========================================================================== */
+
+.button--small {
+  padding: var(--spacing-2) var(--spacing-4);
+  font-size: 0.875rem;
+}
+
+.button--large {
+  padding: var(--spacing-4) var(--spacing-8);
+  font-size: 1rem;
+}
+
+.button--full {
+  width: 100%;
+}
+
+/* ==========================================================================
+   INPUT BASE
+   ========================================================================== */
+
+input,
+textarea,
+select {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  line-height: 1.4;
+  color: var(--color-input-text);
+  background-color: var(--color-input-background);
+  border: var(--border-width-thin) solid var(--color-input-border);
+  border-radius: var(--border-radius-input);
+  padding: var(--spacing-3) var(--spacing-4);
+  width: 100%;
+  transition: 
+    border-color var(--duration-fast) var(--ease-default),
+    background-color var(--duration-fast) var(--ease-default);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-foreground);
+}
+
+input:hover:not(:focus):not(:disabled),
+textarea:hover:not(:focus):not(:disabled),
+select:hover:not(:focus):not(:disabled) {
+  background-color: var(--color-input-hover-background);
+}
+
+input:disabled,
+textarea:disabled,
+select:disabled {
+  background-color: var(--color-disabled-background);
+  border-color: var(--color-disabled-border);
+  color: var(--color-disabled-text);
+  cursor: not-allowed;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgb(var(--color-input-text-rgb) / 0.5);
+}
+
+/* ==========================================================================
+   INPUT - UNDERLINE STYLE
+   ========================================================================== */
+
+.input--underline {
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+  padding-inline: 0;
+  background: transparent;
+}
+
+.input--underline:focus {
+  border-bottom-width: 2px;
+}
+
+/* ==========================================================================
+   INPUT - SEARCH
+   ========================================================================== */
+
+input[type="search"] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* ==========================================================================
+   TEXTAREA
+   ========================================================================== */
+
+textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+/* ==========================================================================
+   SELECT
+   ========================================================================== */
+
+select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-3) center;
+  background-size: 1rem;
+  padding-right: var(--spacing-10);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   CHECKBOX & RADIO
+   ========================================================================== */
+
+input[type="checkbox"],
+input[type="radio"] {
+  width: 1.25rem;
+  height: 1.25rem;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  accent-color: var(--color-foreground);
+}
+
+/* ==========================================================================
+   LABEL
+   ========================================================================== */
+
+label {
+  display: block;
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight);
+  margin-bottom: var(--spacing-2);
+  color: var(--color-foreground);
+}
+
+/* ==========================================================================
+   FORM GROUP
+   ========================================================================== */
+
+.form-group {
+  margin-bottom: var(--spacing-4);
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================================================
+   FIELD (Label + Input wrapper)
+   ========================================================================== */
+
+.field {
+  position: relative;
+  margin-bottom: var(--spacing-4);
+}
+
+.field__label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: var(--font-body-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  margin-bottom: var(--spacing-2);
+  color: var(--color-foreground);
+}
+
+.field__input {
+  width: 100%;
+}
+
+/* Floating label style */
+.field--floating {
+  position: relative;
+}
+
+.field--floating .field__label {
+  position: absolute;
+  top: 50%;
+  left: var(--spacing-4);
+  transform: translateY(-50%);
+  font-size: var(--font-size-paragraph);
+  text-transform: none;
+  letter-spacing: normal;
+  pointer-events: none;
+  transition: 
+    top var(--duration-fast) var(--ease-default),
+    font-size var(--duration-fast) var(--ease-default),
+    transform var(--duration-fast) var(--ease-default);
+  margin-bottom: 0;
+  color: rgb(var(--color-input-text-rgb) / 0.5);
+}
+
+.field--floating .field__input:focus ~ .field__label,
+.field--floating .field__input:not(:placeholder-shown) ~ .field__label {
+  top: var(--spacing-2);
+  transform: translateY(0);
+  font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   QUANTITY SELECTOR
+   ========================================================================== */
+
+.quantity-selector {
+  display: inline-flex;
+  align-items: center;
+  border: var(--border-width-thin) solid var(--color-border);
+  border-radius: var(--border-radius-input);
+}
+
+.quantity-selector__button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-foreground);
+  transition: background-color var(--duration-fast) var(--ease-default);
+}
+
+.quantity-selector__button:hover {
+  background-color: rgb(var(--color-foreground-rgb) / 0.05);
+}
+
+.quantity-selector__button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.quantity-selector__input {
+  width: 3rem;
+  height: 2.5rem;
+  padding: 0;
+  text-align: center;
+  border: none;
+  border-left: var(--border-width-thin) solid var(--color-border);
+  border-right: var(--border-width-thin) solid var(--color-border);
+  border-radius: 0;
+  background: transparent;
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+.quantity-selector__input::-webkit-outer-spin-button,
+.quantity-selector__input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+}
+
+/* ==========================================================================
+   VARIANT SELECTOR / SWATCH
+   ========================================================================== */
+
+.variant-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+}
+
+.variant-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: var(--spacing-2) var(--spacing-3);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-variant-text);
+  background-color: var(--color-variant-background);
+  border: var(--border-width-thin) solid var(--color-variant-border);
+  border-radius: var(--border-radius-button);
+  cursor: pointer;
+  transition: 
+    background-color var(--duration-fast) var(--ease-default),
+    border-color var(--duration-fast) var(--ease-default),
+    color var(--duration-fast) var(--ease-default);
+}
+
+.variant-option:hover {
+  color: var(--color-variant-hover-text);
+  background-color: var(--color-variant-hover-background);
+  border-color: var(--color-variant-hover-border);
+}
+
+.variant-option--selected,
+.variant-option[aria-checked="true"] {
+  color: var(--color-selected-variant-text);
+  background-color: var(--color-selected-variant-background);
+  border-color: var(--color-selected-variant-border);
+}
+
+.variant-option--selected:hover,
+.variant-option[aria-checked="true"]:hover {
+  color: var(--color-selected-variant-hover-text);
+  background-color: var(--color-selected-variant-hover-background);
+  border-color: var(--color-selected-variant-hover-border);
+}
+
+.variant-option--disabled,
+.variant-option:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  text-decoration: line-through;
+}
+
+/* Color swatch */
+.variant-swatch {
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  padding: 0;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.variant-swatch__color {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.variant-swatch--selected {
+  box-shadow: 0 0 0 2px var(--color-background), 0 0 0 4px var(--color-foreground);
+}
+
+/* ==========================================================================
+   DIVIDER
+   ========================================================================== */
+
+.divider {
+  width: 100%;
+  height: var(--border-width-thin);
+  background-color: var(--color-border);
+  border: none;
+  margin: var(--spacing-4) 0;
+}
+
+.divider--thick {
+  height: var(--border-width-medium);
+}
+
+/* ==========================================================================
+   BADGE
+   ========================================================================== */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-family: var(--font-body-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-body-weight-bold);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-primary-button-text);
+  background-color: var(--color-primary-button-background);
+  border-radius: var(--border-radius-sm);
+}
+
+.badge--sale {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.badge--sold-out {
+  background-color: rgb(var(--color-foreground-rgb) / 0.1);
+  color: var(--color-foreground);
+}
+
+/* ==========================================================================
+   PRICE
+   ========================================================================== */
+
+.price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--spacing-2);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+}
+
+.price--large {
+  font-size: 1.25rem;
+}
+
+.price__regular {
+  font-weight: var(--font-body-weight);
+}
+
+.price__sale {
+  font-weight: var(--font-body-weight-bold);
+}
+
+.price__compare {
+  text-decoration: line-through;
+  opacity: 0.5;
+}
+
+/* ==========================================================================
+   LOADING SPINNER
+   ========================================================================== */
+
+.spinner {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid rgb(var(--color-foreground-rgb) / 0.2);
+  border-top-color: var(--color-foreground);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.spinner--small {
+  width: 1rem;
+  height: 1rem;
+  border-width: 1.5px;
+}
+
+.spinner--large {
+  width: 2rem;
+  height: 2rem;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   SKELETON LOADING
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgb(var(--color-foreground-rgb) / 0.06) 25%,
+    rgb(var(--color-foreground-rgb) / 0.12) 50%,
+    rgb(var(--color-foreground-rgb) / 0.06) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--border-radius-sm);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.skeleton--text {
+  height: 1em;
+  width: 100%;
+}
+
+.skeleton--title {
+  height: 1.5em;
+  width: 60%;
+}
+
+.skeleton--image {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+}
+
+/* ==========================================================================
+   ICON
+   ========================================================================== */
+
+.icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.icon--small {
+  width: 1rem;
+  height: 1rem;
+}
+
+.icon--large {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+/* ==========================================================================
+   VISUALLY HIDDEN (Accessibility)
+   ========================================================================== */
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* ==========================================================================
+   SKIP LINK (Accessibility)
+   ========================================================================== */
+
+.skip-to-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  padding: var(--spacing-3) var(--spacing-4);
+  background: var(--color-background);
+  color: var(--color-foreground);
+  transform: translateY(-100%);
+  transition: transform var(--duration-fast) var(--ease-default);
+}
+
+.skip-to-content:focus {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   FOCUS STYLES
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Remove default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}

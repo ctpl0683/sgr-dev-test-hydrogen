@@ -1,0 +1,253 @@
+/**
+ * ==========================================================================
+ * SEARCH MODAL COMPONENT STYLES
+ * ==========================================================================
+ * Matching Ritual theme search design
+ * Features: Predictive search, product results, clean layout
+ */
+
+/* ==========================================================================
+   SEARCH MODAL BASE
+   ========================================================================== */
+
+.search-modal {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+/* ==========================================================================
+   SEARCH MODAL HEADER
+   ========================================================================== */
+
+.search-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.search-modal__title {
+  font-family: var(--font-body-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.search-modal__close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.search-modal__close:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   SEARCH FORM
+   ========================================================================== */
+
+.search-modal__form-wrapper {
+  padding: var(--spacing-4) var(--spacing-5);
+  border-bottom: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.search-modal__form {
+  display: flex;
+  gap: var(--spacing-3);
+}
+
+.search-modal__input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  border-radius: var(--border-radius-input);
+}
+
+.search-modal__input-icon {
+  flex-shrink: 0;
+  opacity: 0.5;
+}
+
+.search-modal__input {
+  flex: 1;
+  padding: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+}
+
+.search-modal__input::placeholder {
+  color: var(--color-foreground);
+  opacity: 0.5;
+}
+
+.search-modal__input:focus {
+  outline: none;
+}
+
+.search-modal__submit {
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   SEARCH RESULTS
+   ========================================================================== */
+
+.search-modal__results {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-4) var(--spacing-5);
+}
+
+.search-modal__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-8);
+  color: var(--color-foreground-muted);
+}
+
+.search-modal__results-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* ==========================================================================
+   SEARCH SECTIONS
+   ========================================================================== */
+
+.search-modal__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.search-modal__section-title {
+  font-family: var(--font-body-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-foreground-muted);
+  margin: 0;
+}
+
+/* ==========================================================================
+   PRODUCT RESULTS
+   ========================================================================== */
+
+.search-modal__products {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.search-modal__product {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3);
+  padding: var(--spacing-2);
+  text-decoration: none;
+  color: var(--color-foreground);
+  border-radius: var(--border-radius-sm);
+  transition: background-color var(--duration-fast) var(--ease-default);
+}
+
+.search-modal__product:hover {
+  background-color: rgb(var(--color-foreground-rgb) / 0.05);
+  text-decoration: none;
+}
+
+.search-modal__product-image {
+  width: 60px;
+  height: 75px;
+  object-fit: cover;
+  border-radius: var(--border-radius-image);
+  flex-shrink: 0;
+}
+
+.search-modal__product-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.search-modal__product-title {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight);
+  line-height: 1.3;
+}
+
+.search-modal__product-price {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   LIST RESULTS (Collections, Pages, Articles)
+   ========================================================================== */
+
+.search-modal__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.search-modal__list-item {
+  padding: var(--spacing-2) 0;
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.search-modal__list-item:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+/* ==========================================================================
+   VIEW ALL LINK
+   ========================================================================== */
+
+.search-modal__view-all {
+  display: inline-block;
+  padding: var(--spacing-4) 0;
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+  color: var(--color-foreground);
+  text-decoration: none;
+  border-top: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+  margin-top: var(--spacing-4);
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.search-modal__view-all:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}

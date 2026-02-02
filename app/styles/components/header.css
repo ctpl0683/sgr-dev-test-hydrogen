@@ -1,0 +1,285 @@
+/**
+ * ==========================================================================
+ * HEADER COMPONENT STYLES
+ * ==========================================================================
+ * Matching Ritual theme header design
+ * Features: Centered logo, left menu, sticky, transparent on homepage
+ */
+
+/* ==========================================================================
+   HEADER BASE
+   ========================================================================== */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--layer-sticky);
+  background-color: var(--color-background);
+  transition: 
+    background-color var(--duration-normal) var(--ease-default),
+    transform var(--duration-normal) var(--ease-default);
+}
+
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--header-height);
+  padding: 0 var(--spacing-4);
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+@media (min-width: 750px) {
+  .header__inner {
+    padding: 0 var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .header__inner {
+    padding: 0 var(--spacing-12);
+  }
+}
+
+/* ==========================================================================
+   TRANSPARENT HEADER (Homepage)
+   ========================================================================== */
+
+.header--transparent {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  color: var(--color-background);
+}
+
+.header--transparent .header__logo-text,
+.header--transparent .header-menu__link,
+.header--transparent .header__icon-button {
+  color: var(--color-background);
+}
+
+/* When scrolled, make header solid */
+.header--transparent.header--scrolled {
+  position: sticky;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+.header--transparent.header--scrolled .header__logo-text,
+.header--transparent.header--scrolled .header-menu__link,
+.header--transparent.header--scrolled .header__icon-button {
+  color: var(--color-foreground);
+}
+
+/* ==========================================================================
+   MOBILE TOGGLE
+   ========================================================================== */
+
+.header__mobile-toggle {
+  display: flex;
+  align-items: center;
+}
+
+@media (min-width: 990px) {
+  .header__mobile-toggle {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   LOGO
+   ========================================================================== */
+
+.header__logo {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header__logo a {
+  display: block;
+  text-decoration: none;
+}
+
+.header__logo-text {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 1.25rem;
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+  color: var(--color-foreground);
+  transition: color var(--duration-fast) var(--ease-default);
+}
+
+.header__logo-image {
+  max-height: 40px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+@media (min-width: 750px) {
+  .header__logo-text {
+    font-size: 1.5rem;
+  }
+  
+  .header__logo-image {
+    max-height: 50px;
+  }
+}
+
+/* ==========================================================================
+   DESKTOP NAVIGATION
+   ========================================================================== */
+
+.header__nav-desktop {
+  display: none;
+}
+
+@media (min-width: 990px) {
+  .header__nav-desktop {
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* ==========================================================================
+   HEADER MENU
+   ========================================================================== */
+
+.header-menu--desktop {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.header-menu__link {
+  font-family: var(--font-accent-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-accent-weight);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-foreground);
+  text-decoration: none;
+  padding: var(--spacing-2) 0;
+  position: relative;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.header-menu__link:hover {
+  opacity: 0.7;
+  text-decoration: none;
+}
+
+.header-menu__link--active {
+  opacity: 1;
+}
+
+.header-menu__link--active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background-color: currentColor;
+}
+
+/* Mobile Menu Styles */
+.header-menu--mobile {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4) 0;
+}
+
+.header-menu--mobile .header-menu__link {
+  font-size: 1rem;
+  padding: var(--spacing-3) 0;
+  border-bottom: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+/* ==========================================================================
+   HEADER ACTIONS (Right side)
+   ========================================================================== */
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+@media (min-width: 750px) {
+  .header__actions {
+    gap: var(--spacing-4);
+  }
+}
+
+/* ==========================================================================
+   ICON BUTTONS
+   ========================================================================== */
+
+.header__icon-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-foreground);
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-default);
+  text-decoration: none;
+}
+
+.header__icon-button:hover {
+  opacity: 0.7;
+}
+
+.header__icon-button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ==========================================================================
+   CART BUTTON WITH COUNT
+   ========================================================================== */
+
+.header__cart-button {
+  position: relative;
+}
+
+.header__cart-count {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  font-family: var(--font-body-family);
+  font-size: 10px;
+  font-weight: var(--font-body-weight-bold);
+  line-height: 16px;
+  text-align: center;
+  color: var(--color-background);
+  background-color: var(--color-foreground);
+  border-radius: var(--border-radius-full);
+}
+
+/* ==========================================================================
+   STICKY HEADER BEHAVIOR
+   ========================================================================== */
+
+.header--hidden {
+  transform: translateY(-100%);
+}
+
+.header--visible {
+  transform: translateY(0);
+}

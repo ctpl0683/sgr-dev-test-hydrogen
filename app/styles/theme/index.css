@@ -1,0 +1,22 @@
+/**
+ * ==========================================================================
+ * RITUAL THEME - MAIN STYLESHEET
+ * ==========================================================================
+ * This file imports all theme-related styles in the correct order.
+ * Import this file in your app to apply the Ritual theme design system.
+ */
+
+/* 1. Design Tokens (CSS Custom Properties) */
+@import './variables.css';
+
+/* 2. Color Schemes */
+@import './colors.css';
+
+/* 3. Typography System */
+@import './typography.css';
+
+/* 4. Layout Utilities */
+@import './layout.css';
+
+/* 5. Base Components */
+@import './components.css';

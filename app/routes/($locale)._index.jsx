@@ -2,6 +2,15 @@ import {Await, useLoaderData, Link} from 'react-router';
 import {Suspense} from 'react';
 import {Image} from '@shopify/hydrogen';
 import {ProductItem} from '~/components/ProductItem';
+import {
+  HeroBanner,
+  CollectionGrid,
+  FeaturedProduct,
+  ProductCarousel,
+  Marquee,
+} from '~/components/sections';
+import {HOMEPAGE_IMAGE_BANNER_QUERY} from '~/graphql/storefront/ThemeSettingsQuery';
+import {parseMetaobjectFields} from '~/lib/metaobjects';
 
 /**
  * @type {Route.MetaFunction}
@@ -29,13 +38,35 @@ export async function loader(args) {
  * @param {Route.LoaderArgs}
  */
 async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
+  const [{collections}, {shop}, allCollections, {products: featuredProducts}, imageBannerData] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(SHOP_QUERY),
+    context.storefront.query(ALL_COLLECTIONS_QUERY),
+    context.storefront.query(FEATURED_PRODUCTS_QUERY),
+    // Fetch the image_banner metaobject for the hero section
+    context.storefront.query(HOMEPAGE_IMAGE_BANNER_QUERY).catch((err) => {
+      console.error('Error fetching image banner:', err);
+      return {metaobject: null};
+    }),
   ]);
+
+  // Debug: Log the raw response
+  console.log('Image Banner Data:', JSON.stringify(imageBannerData, null, 2));
+
+  // Parse the image banner metaobject fields
+  const imageBanner = imageBannerData?.metaobject 
+    ? parseMetaobjectFields(imageBannerData.metaobject)
+    : null;
+  
+  // Debug: Log parsed data
+  console.log('Parsed Image Banner:', JSON.stringify(imageBanner, null, 2));
 
   return {
     featuredCollection: collections.nodes[0],
+    shop,
+    collections: allCollections.collections.nodes,
+    featuredProduct: featuredProducts.nodes[0],
+    imageBanner,
   };
 }
 
@@ -64,8 +95,54 @@ export default function Homepage() {
   const data = useLoaderData();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      {/* Hero Banner - Uses metaobject data if available */}
+      <HeroBanner 
+        shopName={data.shop?.name || 'SGR-DEV-TEST'} 
+        tagline="Premium surfing gear for the modern adventurer"
+        ctaLink="/collections/all"
+        ctaText="Shop Now"
+        imageBanner={data.imageBanner}
+      />
+
+      {/* Marquee Announcement */}
+      <Marquee 
+        text="Free shipping on orders over $100" 
+        speed={25}
+        repeat={6}
+      />
+
+      {/* Collection Grid */}
+      {data.collections && data.collections.length > 0 && (
+        <CollectionGrid 
+          collections={data.collections} 
+          heading="Shop by Category"
+          columns={4}
+        />
+      )}
+
+      {/* Featured Product */}
+      {data.featuredProduct && (
+        <FeaturedProduct 
+          product={data.featuredProduct}
+          heading="Featured"
+        />
+      )}
+
+      {/* Product Carousel */}
+      <Suspense fallback={<div className="loading-section">Loading products...</div>}>
+        <Await resolve={data.recommendedProducts}>
+          {(response) => response && (
+            <ProductCarousel 
+              products={response.products.nodes}
+              heading="Recommended Products"
+              collectionHandle="all"
+            />
+          )}
+        </Await>
+      </Suspense>
+
+      {/* Featured Collection (original) */}
+      <FeaturedCollectionSection collection={data.featuredCollection} />
     </div>
   );
 }
@@ -75,21 +152,23 @@ export default function Homepage() {
  *   collection: FeaturedCollectionFragment;
  * }}
  */
-function FeaturedCollection({collection}) {
+function FeaturedCollectionSection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+    <section className="featured-collection-section">
+      <Link
+        className="featured-collection"
+        to={`/collections/${collection.handle}`}
+      >
+        {image && (
+          <div className="featured-collection-image">
+            <Image data={image} sizes="100vw" />
+          </div>
+        )}
+        <h2 className="featured-collection__title">{collection.title}</h2>
+      </Link>
+    </section>
   );
 }
 
@@ -98,27 +177,6 @@ function FeaturedCollection({collection}) {
  *   products: Promise<RecommendedProductsQuery | null>;
  * }}
  */
-function RecommendedProducts({products}) {
-  return (
-    <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={products}>
-          {(response) => (
-            <div className="recommended-products-grid">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : null}
-            </div>
-          )}
-        </Await>
-      </Suspense>
-      <br />
-    </div>
-  );
-}
 
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
@@ -167,6 +225,77 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     products(first: 4, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
+      }
+    }
+  }
+`;
+
+const SHOP_QUERY = `#graphql
+  query Shop {
+    shop {
+      name
+      description
+    }
+  }
+`;
+
+const ALL_COLLECTIONS_QUERY = `#graphql
+  query AllCollections($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    collections(first: 8, sortKey: UPDATED_AT) {
+      nodes {
+        id
+        title
+        handle
+        description
+        image {
+          id
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+  }
+`;
+
+const FEATURED_PRODUCTS_QUERY = `#graphql
+  query FeaturedProducts($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    products(first: 1, sortKey: BEST_SELLING) {
+      nodes {
+        id
+        title
+        handle
+        vendor
+        description
+        featuredImage {
+          id
+          url
+          altText
+          width
+          height
+        }
+        priceRange {
+          minVariantPrice {
+            amount
+            currencyCode
+          }
+        }
+        variants(first: 1) {
+          nodes {
+            id
+            price {
+              amount
+              currencyCode
+            }
+            compareAtPrice {
+              amount
+              currencyCode
+            }
+          }
+        }
       }
     }
   }

@@ -1,0 +1,320 @@
+/**
+ * ==========================================================================
+ * RITUAL THEME - COLOR SCHEMES
+ * ==========================================================================
+ * Based on the exported Shopify Ritual theme color settings
+ * Contains all 6 color schemes defined in settings_data.json
+ */
+
+:root {
+  /* ==========================================================================
+     DEFAULT COLOR SCHEME (scheme-1) - Light/White
+     ========================================================================== */
+
+  /* Background */
+  --color-background: rgb(255, 255, 255);
+  --color-background-rgb: 255, 255, 255;
+
+  /* Foreground (Text) */
+  --color-foreground: rgb(0, 0, 0);
+  --color-foreground-rgb: 0, 0, 0;
+  --color-foreground-heading: rgb(0, 0, 0);
+  --color-foreground-heading-rgb: 0, 0, 0;
+  --color-foreground-muted: rgb(0 0 0 / 0.6);
+
+  /* Primary Accent */
+  --color-primary: rgb(193, 80, 69);
+  --color-primary-rgb: 193, 80, 69;
+  --color-primary-hover: rgb(173, 60, 49);
+  --color-primary-hover-rgb: 173, 60, 49;
+
+  /* Border & Shadow */
+  --color-border: rgb(0, 0, 0);
+  --color-border-rgb: 0, 0, 0;
+  --color-shadow: rgb(0, 0, 0);
+  --color-shadow-rgb: 0, 0, 0;
+
+  /* Primary Button */
+  --color-primary-button-text: rgb(255, 255, 255);
+  --color-primary-button-background: rgb(0, 0, 0);
+  --color-primary-button-border: rgb(0, 0, 0);
+  --color-primary-button-hover-text: rgb(255, 255, 255);
+  --color-primary-button-hover-background: rgb(38, 38, 38);
+  --color-primary-button-hover-border: rgb(38, 38, 38);
+
+  /* Secondary Button */
+  --color-secondary-button-text: rgb(0, 0, 0);
+  --color-secondary-button-background: rgb(255, 255, 255);
+  --color-secondary-button-border: rgb(0, 0, 0);
+  --color-secondary-button-hover-text: rgb(255, 255, 255);
+  --color-secondary-button-hover-background: rgb(0, 0, 0);
+  --color-secondary-button-hover-border: rgb(0, 0, 0);
+
+  /* Input Fields */
+  --color-input-background: rgb(255, 255, 255);
+  --color-input-text: rgb(0, 0, 0);
+  --color-input-text-rgb: 0, 0, 0;
+  --color-input-border: rgb(0, 0, 0);
+  --color-input-hover-background: rgb(245, 245, 245);
+
+  /* Variant Selectors */
+  --color-variant-background: rgb(255, 255, 255);
+  --color-variant-border: rgb(0, 0, 0);
+  --color-variant-text: rgb(0, 0, 0);
+  --color-variant-text-rgb: 0, 0, 0;
+  --color-variant-hover-background: rgb(245, 245, 245);
+  --color-variant-hover-text: rgb(0, 0, 0);
+  --color-variant-hover-border: rgb(0, 0, 0);
+
+  /* Selected Variant */
+  --color-selected-variant-background: rgb(0, 0, 0);
+  --color-selected-variant-border: rgb(0, 0, 0);
+  --color-selected-variant-text: rgb(255, 255, 255);
+  --color-selected-variant-hover-background: rgb(38, 38, 38);
+  --color-selected-variant-hover-text: rgb(255, 255, 255);
+  --color-selected-variant-hover-border: rgb(38, 38, 38);
+
+  /* Disabled States */
+  --color-disabled-background: rgb(0 0 0 / 0.1);
+  --color-disabled-border: rgb(0 0 0 / 0.05);
+  --color-disabled-text: rgb(0 0 0 / 0.5);
+
+  /* Utility Colors */
+  --color-success: rgb(34, 197, 94);
+  --color-warning: rgb(234, 179, 8);
+  --color-error: rgb(239, 68, 68);
+  --color-info: rgb(59, 130, 246);
+}
+
+/* ==========================================================================
+   COLOR SCHEME 1 - Light/White (Default)
+   ========================================================================== */
+.color-scheme-1,
+[data-color-scheme="1"] {
+  --color-background: rgb(255, 255, 255);
+  --color-background-rgb: 255, 255, 255;
+  --color-foreground: rgb(0, 0, 0);
+  --color-foreground-rgb: 0, 0, 0;
+  --color-foreground-heading: rgb(0, 0, 0);
+  --color-foreground-heading-rgb: 0, 0, 0;
+  --color-primary: rgb(193, 80, 69);
+  --color-primary-rgb: 193, 80, 69;
+  --color-border: rgb(0, 0, 0);
+  --color-border-rgb: 0, 0, 0;
+  --opacity-5-15: 0.05;
+  --opacity-10-25: 0.1;
+  --opacity-35-55: 0.35;
+  --opacity-40-60: 0.40;
+  --opacity-30-60: 0.30;
+}
+
+/* ==========================================================================
+   COLOR SCHEME 2 - Dark (Footer)
+   ========================================================================== */
+.color-scheme-2,
+[data-color-scheme="2"] {
+  --color-background: rgb(0, 0, 0);
+  --color-background-rgb: 0, 0, 0;
+  --color-foreground: rgb(255, 255, 255);
+  --color-foreground-rgb: 255, 255, 255;
+  --color-foreground-heading: rgb(255, 255, 255);
+  --color-foreground-heading-rgb: 255, 255, 255;
+  --color-foreground-muted: rgb(255 255 255 / 0.6);
+  --color-primary: rgb(193, 80, 69);
+  --color-primary-rgb: 193, 80, 69;
+  --color-border: rgb(255, 255, 255);
+  --color-border-rgb: 255, 255, 255;
+
+  /* Primary Button - Inverted */
+  --color-primary-button-text: rgb(0, 0, 0);
+  --color-primary-button-background: rgb(255, 255, 255);
+  --color-primary-button-border: rgb(255, 255, 255);
+  --color-primary-button-hover-text: rgb(0, 0, 0);
+  --color-primary-button-hover-background: rgb(230, 230, 230);
+  --color-primary-button-hover-border: rgb(230, 230, 230);
+
+  /* Secondary Button - Inverted */
+  --color-secondary-button-text: rgb(255, 255, 255);
+  --color-secondary-button-background: rgb(0, 0, 0);
+  --color-secondary-button-border: rgb(255, 255, 255);
+  --color-secondary-button-hover-text: rgb(0, 0, 0);
+  --color-secondary-button-hover-background: rgb(255, 255, 255);
+  --color-secondary-button-hover-border: rgb(255, 255, 255);
+
+  /* Input Fields */
+  --color-input-background: rgb(0, 0, 0);
+  --color-input-text: rgb(255, 255, 255);
+  --color-input-text-rgb: 255, 255, 255;
+  --color-input-border: rgb(255, 255, 255);
+  --color-input-hover-background: rgb(38, 38, 38);
+
+  /* Variant Selectors */
+  --color-variant-background: rgb(0, 0, 0);
+  --color-variant-border: rgb(255, 255, 255);
+  --color-variant-text: rgb(255, 255, 255);
+  --color-variant-text-rgb: 255, 255, 255;
+
+  /* Selected Variant */
+  --color-selected-variant-background: rgb(255, 255, 255);
+  --color-selected-variant-border: rgb(255, 255, 255);
+  --color-selected-variant-text: rgb(0, 0, 0);
+
+  /* Adjusted opacity for dark backgrounds */
+  --opacity-5-15: 0.15;
+  --opacity-10-25: 0.25;
+  --opacity-35-55: 0.55;
+  --opacity-40-60: 0.60;
+  --opacity-30-60: 0.60;
+}
+
+/* ==========================================================================
+   COLOR SCHEME 3 - Cream/Off-white (Header, Sections)
+   ========================================================================== */
+.color-scheme-3,
+[data-color-scheme="3"] {
+  --color-background: rgb(245, 243, 240);
+  --color-background-rgb: 245, 243, 240;
+  --color-foreground: rgb(0, 0, 0);
+  --color-foreground-rgb: 0, 0, 0;
+  --color-foreground-heading: rgb(0, 0, 0);
+  --color-foreground-heading-rgb: 0, 0, 0;
+  --color-primary: rgb(193, 80, 69);
+  --color-primary-rgb: 193, 80, 69;
+  --color-border: rgb(0, 0, 0);
+  --color-border-rgb: 0, 0, 0;
+  --opacity-5-15: 0.05;
+  --opacity-10-25: 0.1;
+  --opacity-35-55: 0.35;
+  --opacity-40-60: 0.40;
+  --opacity-30-60: 0.30;
+}
+
+/* ==========================================================================
+   COLOR SCHEME 4 - Light Gray
+   ========================================================================== */
+.color-scheme-4,
+[data-color-scheme="4"] {
+  --color-background: rgb(240, 240, 240);
+  --color-background-rgb: 240, 240, 240;
+  --color-foreground: rgb(0, 0, 0);
+  --color-foreground-rgb: 0, 0, 0;
+  --color-foreground-heading: rgb(0, 0, 0);
+  --color-foreground-heading-rgb: 0, 0, 0;
+  --color-primary: rgb(193, 80, 69);
+  --color-primary-rgb: 193, 80, 69;
+  --color-border: rgb(0, 0, 0);
+  --color-border-rgb: 0, 0, 0;
+  --opacity-5-15: 0.05;
+  --opacity-10-25: 0.1;
+  --opacity-35-55: 0.35;
+  --opacity-40-60: 0.40;
+  --opacity-30-60: 0.30;
+}
+
+/* ==========================================================================
+   COLOR SCHEME 5 - Accent/Red (Marquee, CTAs)
+   ========================================================================== */
+.color-scheme-5,
+[data-color-scheme="5"] {
+  --color-background: rgb(193, 80, 69);
+  --color-background-rgb: 193, 80, 69;
+  --color-foreground: rgb(255, 255, 255);
+  --color-foreground-rgb: 255, 255, 255;
+  --color-foreground-heading: rgb(255, 255, 255);
+  --color-foreground-heading-rgb: 255, 255, 255;
+  --color-foreground-muted: rgb(255 255 255 / 0.8);
+  --color-primary: rgb(255, 255, 255);
+  --color-primary-rgb: 255, 255, 255;
+  --color-border: rgb(255, 255, 255);
+  --color-border-rgb: 255, 255, 255;
+
+  /* Primary Button */
+  --color-primary-button-text: rgb(193, 80, 69);
+  --color-primary-button-background: rgb(255, 255, 255);
+  --color-primary-button-border: rgb(255, 255, 255);
+  --color-primary-button-hover-text: rgb(193, 80, 69);
+  --color-primary-button-hover-background: rgb(240, 240, 240);
+  --color-primary-button-hover-border: rgb(240, 240, 240);
+
+  /* Secondary Button */
+  --color-secondary-button-text: rgb(255, 255, 255);
+  --color-secondary-button-background: transparent;
+  --color-secondary-button-border: rgb(255, 255, 255);
+  --color-secondary-button-hover-text: rgb(193, 80, 69);
+  --color-secondary-button-hover-background: rgb(255, 255, 255);
+  --color-secondary-button-hover-border: rgb(255, 255, 255);
+
+  /* Adjusted opacity for colored backgrounds */
+  --opacity-5-15: 0.15;
+  --opacity-10-25: 0.25;
+  --opacity-35-55: 0.55;
+  --opacity-40-60: 0.60;
+  --opacity-30-60: 0.60;
+}
+
+/* ==========================================================================
+   COLOR SCHEME 6 - Transparent (Header overlay)
+   ========================================================================== */
+.color-scheme-6,
+[data-color-scheme="6"] {
+  --color-background: transparent;
+  --color-background-rgb: 0, 0, 0;
+  --color-foreground: rgb(255, 255, 255);
+  --color-foreground-rgb: 255, 255, 255;
+  --color-foreground-heading: rgb(255, 255, 255);
+  --color-foreground-heading-rgb: 255, 255, 255;
+  --color-primary: rgb(255, 255, 255);
+  --color-primary-rgb: 255, 255, 255;
+  --color-border: rgb(255, 255, 255);
+  --color-border-rgb: 255, 255, 255;
+
+  /* Adjusted opacity for transparent backgrounds */
+  --opacity-5-15: 0.15;
+  --opacity-10-25: 0.25;
+  --opacity-35-55: 0.55;
+  --opacity-40-60: 0.60;
+  --opacity-30-60: 0.60;
+}
+
+/* ==========================================================================
+   APPLY COLOR SCHEME TO ELEMENTS
+   ========================================================================== */
+
+/* Apply background and text colors based on scheme */
+.color-scheme-1,
+.color-scheme-2,
+.color-scheme-3,
+.color-scheme-4,
+.color-scheme-5,
+.color-scheme-6,
+[data-color-scheme] {
+  color: var(--color-foreground);
+  background-color: var(--color-background);
+}
+
+/* Heading colors inherit from scheme */
+.color-scheme-1 h1, .color-scheme-1 h2, .color-scheme-1 h3,
+.color-scheme-1 h4, .color-scheme-1 h5, .color-scheme-1 h6,
+.color-scheme-2 h1, .color-scheme-2 h2, .color-scheme-2 h3,
+.color-scheme-2 h4, .color-scheme-2 h5, .color-scheme-2 h6,
+.color-scheme-3 h1, .color-scheme-3 h2, .color-scheme-3 h3,
+.color-scheme-3 h4, .color-scheme-3 h5, .color-scheme-3 h6,
+.color-scheme-4 h1, .color-scheme-4 h2, .color-scheme-4 h3,
+.color-scheme-4 h4, .color-scheme-4 h5, .color-scheme-4 h6,
+.color-scheme-5 h1, .color-scheme-5 h2, .color-scheme-5 h3,
+.color-scheme-5 h4, .color-scheme-5 h5, .color-scheme-5 h6,
+.color-scheme-6 h1, .color-scheme-6 h2, .color-scheme-6 h3,
+.color-scheme-6 h4, .color-scheme-6 h5, .color-scheme-6 h6,
+[data-color-scheme] h1, [data-color-scheme] h2, [data-color-scheme] h3,
+[data-color-scheme] h4, [data-color-scheme] h5, [data-color-scheme] h6 {
+  color: var(--color-foreground-heading);
+}
+
+/* Link colors */
+.color-scheme-1 a, .color-scheme-3 a, .color-scheme-4 a {
+  color: var(--color-foreground);
+}
+
+.color-scheme-2 a, .color-scheme-5 a, .color-scheme-6 a {
+  color: var(--color-foreground);
+}

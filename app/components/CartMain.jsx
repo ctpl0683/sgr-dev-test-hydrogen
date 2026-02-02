@@ -25,7 +25,7 @@ export function CartMain({layout, cart: originalCart}) {
     <div className={className}>
       <CartEmpty hidden={linesCount} layout={layout} />
       <div className="cart-details">
-        <div aria-labelledby="cart-lines">
+        <div className="cart-lines" aria-labelledby="cart-lines">
           <ul>
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
@@ -47,14 +47,18 @@ export function CartMain({layout, cart: originalCart}) {
 function CartEmpty({hidden = false}) {
   const {close} = useAside();
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>
+    <div className="cart-empty" hidden={hidden}>
+      <h3 className="cart-empty__title">Your cart is empty</h3>
+      <p className="cart-empty__text">
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
         started!
       </p>
-      <br />
-      <Link to="/collections" onClick={close} prefetch="viewport">
+      <Link 
+        to="/collections" 
+        onClick={close} 
+        prefetch="viewport"
+        className="cart-empty__link"
+      >
         Continue shopping →
       </Link>
     </div>

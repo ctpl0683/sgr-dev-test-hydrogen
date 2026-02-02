@@ -23,16 +23,17 @@ export function CartLineItem({layout, line}) {
       {image && (
         <Image
           alt={title}
-          aspectRatio="1/1"
+          aspectRatio="3/4"
           data={image}
           height={100}
           loading="lazy"
-          width={100}
+          width={80}
         />
       )}
 
-      <div>
+      <div className="cart-line__info">
         <Link
+          className="cart-line__title"
           prefetch="intent"
           to={lineItemUrl}
           onClick={() => {
@@ -45,8 +46,7 @@ export function CartLineItem({layout, line}) {
             <strong>{product.title}</strong>
           </p>
         </Link>
-        <ProductPrice price={line?.cost?.totalAmount} />
-        <ul>
+        <ul className="cart-line__options">
           {selectedOptions.map((option) => (
             <li key={option.name}>
               <small>
@@ -55,6 +55,9 @@ export function CartLineItem({layout, line}) {
             </li>
           ))}
         </ul>
+        <div className="cart-line__price">
+          <ProductPrice price={line?.cost?.totalAmount} />
+        </div>
         <CartLineQuantity line={line} />
       </div>
     </li>

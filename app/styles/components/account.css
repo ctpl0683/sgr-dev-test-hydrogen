@@ -1,0 +1,467 @@
+/**
+ * ==========================================================================
+ * ACCOUNT PAGES STYLES
+ * ==========================================================================
+ * Matching Ritual theme's account page design
+ */
+
+/* ==========================================================================
+   ACCOUNT PAGE LAYOUT
+   ========================================================================== */
+
+.account-page {
+  padding: var(--spacing-8) var(--spacing-4);
+  max-width: var(--page-width);
+  margin: 0 auto;
+}
+
+@media (min-width: 750px) {
+  .account-page {
+    padding: var(--spacing-8) var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .account-page {
+    padding: var(--spacing-12);
+  }
+}
+
+.account-page__header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.account-page__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(2rem, 6vw, 3rem);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 var(--spacing-4);
+}
+
+.account-page__subtitle {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  opacity: 0.7;
+  margin: 0;
+}
+
+/* ==========================================================================
+   ACCOUNT GRID
+   ========================================================================== */
+
+.account-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-8);
+}
+
+@media (min-width: 990px) {
+  .account-grid {
+    grid-template-columns: 200px 1fr;
+    gap: var(--spacing-12);
+  }
+}
+
+/* ==========================================================================
+   ACCOUNT NAVIGATION
+   ========================================================================== */
+
+.account-nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--spacing-2);
+  padding-bottom: var(--spacing-4);
+  border-bottom: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+@media (min-width: 990px) {
+  .account-nav {
+    flex-direction: column;
+    padding-bottom: 0;
+    border-bottom: none;
+    border-right: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+    padding-right: var(--spacing-8);
+  }
+}
+
+.account-nav__link {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+  text-decoration: none;
+  padding: var(--spacing-2) var(--spacing-4);
+  border-radius: var(--border-radius-sm);
+  transition: all var(--duration-fast) var(--ease-default);
+}
+
+@media (min-width: 990px) {
+  .account-nav__link {
+    padding: var(--spacing-3) 0;
+    border-radius: 0;
+  }
+}
+
+.account-nav__link:hover {
+  opacity: 0.7;
+}
+
+.account-nav__link--active {
+  font-weight: var(--font-body-weight-bold);
+}
+
+@media (min-width: 990px) {
+  .account-nav__link--active {
+    border-left: 2px solid var(--color-foreground);
+    padding-left: var(--spacing-4);
+    margin-left: calc(var(--spacing-4) * -1);
+  }
+}
+
+/* ==========================================================================
+   ACCOUNT CONTENT
+   ========================================================================== */
+
+.account-content {
+  min-height: 300px;
+}
+
+.account-content h2 {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 var(--spacing-6);
+}
+
+.account-content h3 {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+  margin: 0 0 var(--spacing-4);
+}
+
+/* ==========================================================================
+   ACCOUNT LOGOUT
+   ========================================================================== */
+
+.account-logout {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin-top: var(--spacing-4);
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.account-logout:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   LOGIN / REGISTER FORMS
+   ========================================================================== */
+
+.auth-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: var(--spacing-8) var(--spacing-4);
+}
+
+.auth-form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.auth-form__header {
+  text-align: center;
+  margin-bottom: var(--spacing-8);
+}
+
+.auth-form__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-tight);
+  margin: 0 0 var(--spacing-2);
+}
+
+.auth-form__subtitle {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  opacity: 0.7;
+  margin: 0;
+}
+
+.auth-form__fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-bottom: var(--spacing-6);
+}
+
+.auth-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.auth-form__label {
+  font-family: var(--font-body-family);
+  font-size: 0.75rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.auth-form__input {
+  padding: var(--spacing-3) var(--spacing-4);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  border: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.2);
+  background-color: transparent;
+  color: var(--color-foreground);
+  transition: border-color var(--duration-fast) var(--ease-default);
+}
+
+.auth-form__input::placeholder {
+  color: var(--color-foreground);
+  opacity: 0.5;
+}
+
+.auth-form__input:focus {
+  outline: none;
+  border-color: var(--color-foreground);
+}
+
+.auth-form__submit {
+  width: 100%;
+  padding: var(--spacing-4);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.auth-form__submit:hover {
+  opacity: 0.8;
+}
+
+.auth-form__submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.auth-form__footer {
+  text-align: center;
+  margin-top: var(--spacing-6);
+}
+
+.auth-form__link {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.auth-form__link:hover {
+  opacity: 0.7;
+}
+
+.auth-form__error {
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: rgb(255 0 0 / 0.1);
+  border: var(--border-width-thin) solid rgb(255 0 0 / 0.3);
+  color: #c00;
+  font-size: var(--font-size-paragraph-small);
+  margin-bottom: var(--spacing-4);
+}
+
+/* ==========================================================================
+   ORDERS LIST
+   ========================================================================== */
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.order-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+  padding: var(--spacing-4);
+  border: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+@media (min-width: 750px) {
+  .order-card {
+    grid-template-columns: 1fr 1fr 1fr auto;
+    align-items: center;
+  }
+}
+
+.order-card__number {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+}
+
+.order-card__date {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.6;
+}
+
+.order-card__status {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body-family);
+  font-size: 0.625rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  background-color: rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.order-card__total {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+}
+
+.order-card__link {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.order-card__link:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   ADDRESS BOOK
+   ========================================================================== */
+
+.address-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-4);
+}
+
+@media (min-width: 750px) {
+  .address-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.address-card {
+  padding: var(--spacing-4);
+  border: var(--border-width-thin) solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.address-card--default {
+  border-color: var(--color-foreground);
+}
+
+.address-card__badge {
+  display: inline-block;
+  padding: var(--spacing-1) var(--spacing-2);
+  font-size: 0.625rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  margin-bottom: var(--spacing-3);
+}
+
+.address-card__content {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  line-height: var(--line-height-paragraph);
+  margin-bottom: var(--spacing-4);
+}
+
+.address-card__content p {
+  margin: 0;
+}
+
+.address-card__actions {
+  display: flex;
+  gap: var(--spacing-4);
+}
+
+.address-card__action {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-small);
+  color: var(--color-foreground);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.address-card__action:hover {
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   EMPTY STATES
+   ========================================================================== */
+
+.account-empty {
+  text-align: center;
+  padding: var(--spacing-12) var(--spacing-4);
+}
+
+.account-empty__text {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  opacity: 0.7;
+  margin: 0 0 var(--spacing-6);
+}
+
+.account-empty__link {
+  display: inline-block;
+  padding: var(--spacing-3) var(--spacing-6);
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph);
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  text-decoration: none;
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+  transition: opacity var(--duration-fast) var(--ease-default);
+}
+
+.account-empty__link:hover {
+  opacity: 0.8;
+}

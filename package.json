@@ -13,12 +13,18 @@
   },
   "prettier": "@shopify/prettier-config",
   "dependencies": {
+    "@headlessui/react": "^2.2.9",
     "@shopify/hydrogen": "2025.7.3",
+    "clsx": "^2.1.1",
+    "embla-carousel-react": "^8.6.0",
+    "framer-motion": "^12.29.2",
     "graphql": "^16.10.0",
     "graphql-tag": "^2.12.6",
     "isbot": "^5.1.22",
+    "lucide-react": "^0.563.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
+    "react-intersection-observer": "^10.0.2",
     "react-router": "7.12.0",
     "react-router-dom": "7.12.0",
     "tailwindcss": "^4.1.6"

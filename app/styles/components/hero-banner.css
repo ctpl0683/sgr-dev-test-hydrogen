@@ -1,0 +1,149 @@
+/**
+ * ==========================================================================
+ * HERO BANNER / LOGO BANNER SECTION STYLES
+ * ==========================================================================
+ * Matching Ritual theme's logo-banner section
+ * Large centered store name with optional tagline and CTA
+ */
+
+.hero-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40vh;
+  padding: var(--spacing-12) var(--spacing-4);
+  text-align: center;
+}
+
+@media (min-width: 750px) {
+  .hero-banner {
+    min-height: 50vh;
+    padding: var(--spacing-12) var(--spacing-6);
+  }
+}
+
+@media (min-width: 990px) {
+  .hero-banner {
+    min-height: 60vh;
+    padding: var(--spacing-12);
+  }
+}
+
+.hero-banner__inner {
+  max-width: var(--page-width);
+  margin: 0 auto;
+  width: 100%;
+}
+
+.hero-banner__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-6);
+}
+
+.hero-banner__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(2.5rem, 10vw, 8rem);
+  line-height: 0.9;
+  letter-spacing: var(--letter-spacing-tight);
+  text-transform: uppercase;
+  margin: 0;
+  color: inherit;
+}
+
+.hero-banner__tagline {
+  font-family: var(--font-body-family);
+  font-size: var(--font-size-paragraph-large);
+  max-width: 40ch;
+  margin: 0;
+  opacity: 0.8;
+}
+
+.hero-banner__cta {
+  margin-top: var(--spacing-4);
+}
+
+/* ==========================================================================
+   IMAGE BANNER VARIANT
+   ========================================================================== */
+
+.hero-banner--image {
+  position: relative;
+  min-height: 70vh;
+  color: #fff;
+}
+
+@media (min-width: 750px) {
+  .hero-banner--image {
+    min-height: 80vh;
+  }
+}
+
+@media (min-width: 990px) {
+  .hero-banner--image {
+    min-height: 90vh;
+  }
+}
+
+.hero-banner__image-wrapper {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.hero-banner__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, var(--hero-overlay-opacity, 0.3));
+}
+
+.hero-banner--image .hero-banner__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-banner--image .hero-banner__title {
+  color: #fff;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+
+.hero-banner--image .hero-banner__tagline {
+  color: #fff;
+  opacity: 0.9;
+}
+
+.hero-banner--image .hero-banner__cta {
+  background-color: #fff;
+  color: #000;
+  border-color: #fff;
+}
+
+.hero-banner--image .hero-banner__cta:hover {
+  background-color: transparent;
+  color: #fff;
+}
+
+/* Text Position Variants */
+.hero-banner--left .hero-banner__content {
+  align-items: flex-start;
+  text-align: left;
+}
+
+.hero-banner--right .hero-banner__content {
+  align-items: flex-end;
+  text-align: right;
+}
+
+.hero-banner--center .hero-banner__content {
+  align-items: center;
+  text-align: center;
+}

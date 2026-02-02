@@ -1,4 +1,4 @@
-import {Analytics, getShopAnalytics, useNonce} from '@shopify/hydrogen';
+import {Analytics, getShopAnalytics, useNonce, getSeoMeta} from '@shopify/hydrogen';
 import {
   Outlet,
   useRouteError,
@@ -11,10 +11,20 @@ import {
 } from 'react-router';
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {
+  THEME_SETTINGS_QUERY,
+  ANNOUNCEMENT_BAR_QUERY,
+  SOCIAL_LINKS_QUERY,
+} from '~/graphql/storefront/ThemeSettingsQuery';
 import resetStyles from '~/styles/reset.css?url';
+import themeStyles from '~/styles/theme/index.css?url';
+import componentStyles from '~/styles/components/index.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
+import {ThemeSettingsProvider} from '~/context/ThemeSettingsContext';
+import {AnnouncementBar} from '~/components/AnnouncementBar';
+import {ThemeStyles} from '~/components/ThemeStyles';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -55,6 +65,21 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.googleapis.com',
+    },
+    {
+      rel: 'preconnect',
+      href: 'https://fonts.gstatic.com',
+      crossOrigin: 'anonymous',
+    },
+    {
+      rel: 'stylesheet',
+      href: 'https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&family=Inter:wght@400;500;600;700&display=swap',
+    },
+    // Favicon is now set dynamically from metaobject settings in Layout component
+    // Fallback favicon is still imported for cases where metaobject is not set
     {rel: 'icon', type: 'image/svg+xml', href: favicon},
   ];
 }
@@ -98,17 +123,31 @@ export async function loader(args) {
 async function loadCriticalData({context}) {
   const {storefront} = context;
 
-  const [header] = await Promise.all([
+  const [header, themeSettingsData, announcementData, socialLinksData] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
         headerMenuHandle: 'main-menu', // Adjust to your header menu handle
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
+    // Theme settings from metaobjects
+    storefront.query(THEME_SETTINGS_QUERY, {
+      cache: storefront.CacheShort(),
+    }).catch(() => ({metaobject: null})),
+    storefront.query(ANNOUNCEMENT_BAR_QUERY, {
+      cache: storefront.CacheShort(),
+    }).catch(() => ({metaobject: null})),
+    storefront.query(SOCIAL_LINKS_QUERY, {
+      cache: storefront.CacheLong(),
+    }).catch(() => ({metaobject: null})),
   ]);
 
-  return {header};
+  return {
+    header,
+    themeSettings: themeSettingsData?.metaobject || null,
+    announcement: announcementData?.metaobject || null,
+    socialLinks: socialLinksData?.metaobject || null,
+  };
 }
 
 /**
@@ -145,14 +184,25 @@ function loadDeferredData({context}) {
  */
 export function Layout({children}) {
   const nonce = useNonce();
+  /** @type {RootLoader} */
+  const data = useRouteLoaderData('root');
+
+  // Get dynamic favicon from theme settings metaobject
+  const dynamicFavicon = getDynamicFavicon(data?.themeSettings);
 
   return (
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1" />
+        {/* Dynamic favicon from metaobject - overrides static one if available */}
+        {dynamicFavicon && (
+          <link rel="icon" type={dynamicFavicon.type} href={dynamicFavicon.url} />
+        )}
         <link rel="stylesheet" href={tailwindCss}></link>
         <link rel="stylesheet" href={resetStyles}></link>
+        <link rel="stylesheet" href={themeStyles}></link>
+        <link rel="stylesheet" href={componentStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
@@ -166,6 +216,53 @@ export function Layout({children}) {
   );
 }
 
+/**
+ * Extract favicon URL from theme settings metaobject
+ * @param {object|null} themeSettings - Theme settings metaobject
+ * @returns {{url: string, type: string}|null}
+ */
+function getDynamicFavicon(themeSettings) {
+  if (!themeSettings?.fields) return null;
+
+  const faviconField = themeSettings.fields.find(
+    (field) => field?.key === 'favicon'
+  );
+
+  if (!faviconField) return null;
+
+  // Handle file_reference type
+  const imageUrl = faviconField.reference?.image?.url;
+  if (!imageUrl) return null;
+
+  // Determine image type from URL
+  const type = getImageMimeType(imageUrl);
+
+  return {url: imageUrl, type};
+}
+
+/**
+ * Get MIME type from image URL
+ * @param {string} url - Image URL
+ * @returns {string}
+ */
+function getImageMimeType(url) {
+  if (!url || typeof url !== 'string') return 'image/x-icon';
+  
+  const extension = url.split('.').pop()?.split('?')[0]?.toLowerCase();
+  
+  const mimeTypes = {
+    'svg': 'image/svg+xml',
+    'png': 'image/png',
+    'ico': 'image/x-icon',
+    'jpg': 'image/jpeg',
+    'jpeg': 'image/jpeg',
+    'gif': 'image/gif',
+    'webp': 'image/webp',
+  };
+
+  return mimeTypes[extension] || 'image/x-icon';
+}
+
 export default function App() {
   /** @type {RootLoader} */
   const data = useRouteLoaderData('root');
@@ -175,15 +272,23 @@ export default function App() {
   }
 
   return (
-    <Analytics.Provider
-      cart={data.cart}
-      shop={data.shop}
-      consent={data.consent}
+    <ThemeSettingsProvider
+      settings={data.themeSettings}
+      announcement={data.announcement}
+      socialLinks={data.socialLinks}
     >
-      <PageLayout {...data}>
-        <Outlet />
-      </PageLayout>
-    </Analytics.Provider>
+      <ThemeStyles />
+      <Analytics.Provider
+        cart={data.cart}
+        shop={data.shop}
+        consent={data.consent}
+      >
+        <AnnouncementBar />
+        <PageLayout {...data}>
+          <Outlet />
+        </PageLayout>
+      </Analytics.Provider>
+    </ThemeSettingsProvider>
   );
 }
 

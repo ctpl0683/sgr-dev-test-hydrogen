@@ -1,0 +1,53 @@
+/**
+ * ==========================================================================
+ * MARQUEE SECTION STYLES
+ * ==========================================================================
+ * Matching Ritual theme's marquee/announcement section
+ */
+
+.marquee-section {
+  padding: var(--spacing-6) 0;
+  overflow: hidden;
+  background-color: var(--color-foreground);
+  color: var(--color-background);
+}
+
+.marquee-section__track {
+  display: flex;
+  width: max-content;
+  animation: marquee var(--marquee-speed, 30s) linear infinite;
+}
+
+.marquee-section__content {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.marquee-section__item {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  padding: 0 var(--spacing-4);
+}
+
+.marquee-section__separator {
+  opacity: 0.5;
+  margin-left: var(--spacing-4);
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Pause on hover */
+.marquee-section:hover .marquee-section__track {
+  animation-play-state: paused;
+}

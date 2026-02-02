@@ -2,7 +2,7 @@ import {redirect, useLoaderData} from 'react-router';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
-import {ProductItem} from '~/components/ProductItem';
+import {ProductCard} from '~/components/product';
 
 /**
  * @type {Route.MetaFunction}
@@ -76,21 +76,32 @@ export default function Collection() {
   const {collection} = useLoaderData();
 
   return (
-    <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
-      <PaginatedResourceSection
-        connection={collection.products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
+    <div className="collection-page">
+      <div className="collection-page__inner">
+        {/* Collection Header */}
+        <header className="collection-page__header">
+          <h1 className="collection-page__title">{collection.title}</h1>
+          {collection.description && (
+            <p className="collection-page__description">{collection.description}</p>
+          )}
+        </header>
+
+        {/* Products Grid */}
+        <PaginatedResourceSection
+          connection={collection.products}
+          resourcesClassName="collection-page__grid"
+        >
+          {({node: product, index}) => (
+            <ProductCard
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+              aspectRatio="3/4"
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
+
       <Analytics.CollectionView
         data={{
           collection: {
@@ -112,12 +123,22 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    vendor
     featuredImage {
       id
       altText
       url
       width
       height
+    }
+    images(first: 2) {
+      nodes {
+        id
+        altText
+        url
+        width
+        height
+      }
     }
     priceRange {
       minVariantPrice {

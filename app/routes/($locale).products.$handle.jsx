@@ -7,9 +7,7 @@ import {
   getAdjacentAndFirstAvailableVariants,
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
-import {ProductPrice} from '~/components/ProductPrice';
-import {ProductImage} from '~/components/ProductImage';
-import {ProductForm} from '~/components/ProductForm';
+import {ProductGallery, ProductInfo} from '~/components/product';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 
 /**
@@ -103,31 +101,28 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product;
+  // Get all product images
+  const images = product.images?.nodes || [];
 
   return (
-    <div className="product">
-      <ProductImage image={selectedVariant?.image} />
-      <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
-        />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
+    <div className="product-page">
+      <div className="product-page__inner">
+        <div className="product-page__grid">
+          {/* Product Gallery */}
+          <ProductGallery 
+            images={images} 
+            selectedImage={selectedVariant?.image}
+          />
+
+          {/* Product Info */}
+          <ProductInfo
+            product={product}
+            selectedVariant={selectedVariant}
+            productOptions={productOptions}
+          />
+        </div>
       </div>
+
       <Analytics.ProductView
         data={{
           products: [
@@ -194,6 +189,15 @@ const PRODUCT_FRAGMENT = `#graphql
     description
     encodedVariantExistence
     encodedVariantAvailability
+    images(first: 10) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     options {
       name
       optionValues {
