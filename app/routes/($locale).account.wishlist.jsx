@@ -90,7 +90,7 @@ function HeartIcon() {
   );
 }
 
-const CUSTOMER_QUERY = `#graphql
+const CUSTOMER_QUERY = `
   query CustomerBasic {
     customer {
       id
