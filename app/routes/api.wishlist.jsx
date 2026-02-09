@@ -12,12 +12,16 @@ import {
   removeFromWishlist,
   isValidCustomerId,
   isValidProductId,
+  setEnvContext,
 } from '~/lib/admin-api.server';
 
 /**
  * GET /api/wishlist
  */
-export async function loader({request}) {
+export async function loader({request, context}) {
+  // Set environment context for Admin API
+  setEnvContext(context.env);
+
   const url = new URL(request.url);
   const customerId = url.searchParams.get('customerId');
 
@@ -42,7 +46,10 @@ export async function loader({request}) {
  * POST /api/wishlist
  * Body: { action: 'add' | 'remove', customerId: string, productId: string }
  */
-export async function action({request}) {
+export async function action({request, context}) {
+  // Set environment context for Admin API
+  setEnvContext(context.env);
+
   if (request.method !== 'POST') {
     return data({success: false, error: 'Method not allowed'}, {status: 405});
   }

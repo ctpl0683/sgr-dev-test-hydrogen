@@ -29,62 +29,64 @@ export function ProductCard({
   const isOnSale = compareAtPrice && parseFloat(compareAtPrice.amount) > parseFloat(price?.amount || '0');
 
   return (
-    <Link
-      className="product-card"
-      prefetch="intent"
-      to={variantUrl}
-    >
-      {/* Wishlist Button */}
+    <div className="product-card">
+      {/* Wishlist Button - Outside Link to prevent click propagation issues */}
       <WishlistButton 
         productId={product.id} 
         className="product-card__wishlist"
         size="small"
       />
 
-      {/* Image Container */}
-      <div className="product-card__media" style={{'--aspect-ratio': aspectRatio}}>
-        {image && (
-          <Image
-            alt={image.altText || product.title}
-            className="product-card__image product-card__image--primary"
-            data={image}
-            loading={loading}
-            sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
-          />
-        )}
-        {showSecondImage && secondImage && (
-          <Image
-            alt={secondImage.altText || product.title}
-            className="product-card__image product-card__image--secondary"
-            data={secondImage}
-            loading="lazy"
-            sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
-          />
-        )}
-        {!image && <div className="product-card__placeholder" />}
-        
-        {/* Sale Badge */}
-        {isOnSale && (
-          <span className="product-card__badge product-card__badge--sale">Sale</span>
-        )}
-      </div>
-
-      {/* Product Info */}
-      <div className="product-card__info">
-        {showVendor && product.vendor && (
-          <span className="product-card__vendor">{product.vendor}</span>
-        )}
-        <h3 className="product-card__title">{product.title}</h3>
-        <div className="product-card__price">
-          {price && <Money data={price} />}
-          {isOnSale && compareAtPrice && (
-            <s className="product-card__compare-price">
-              <Money data={compareAtPrice} />
-            </s>
+      <Link
+        className="product-card__link"
+        prefetch="intent"
+        to={variantUrl}
+      >
+        {/* Image Container */}
+        <div className="product-card__media" style={{'--aspect-ratio': aspectRatio}}>
+          {image && (
+            <Image
+              alt={image.altText || product.title}
+              className="product-card__image product-card__image--primary"
+              data={image}
+              loading={loading}
+              sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+            />
+          )}
+          {showSecondImage && secondImage && (
+            <Image
+              alt={secondImage.altText || product.title}
+              className="product-card__image product-card__image--secondary"
+              data={secondImage}
+              loading="lazy"
+              sizes="(min-width: 990px) 25vw, (min-width: 750px) 33vw, 50vw"
+            />
+          )}
+          {!image && <div className="product-card__placeholder" />}
+          
+          {/* Sale Badge */}
+          {isOnSale && (
+            <span className="product-card__badge product-card__badge--sale">Sale</span>
           )}
         </div>
-      </div>
-    </Link>
+
+        {/* Product Info */}
+        <div className="product-card__info">
+          {showVendor && product.vendor && (
+            <span className="product-card__vendor">{product.vendor}</span>
+          )}
+          <h3 className="product-card__title">{product.title}</h3>
+          <div className="product-card__price">
+            {price && <Money data={price} />}
+            {isOnSale && compareAtPrice && (
+              <s className="product-card__compare-price">
+                <Money data={compareAtPrice} />
+              </s>
+            )}
+          </div>
+        </div>
+      </Link>
+    </div>
   );
 }
 

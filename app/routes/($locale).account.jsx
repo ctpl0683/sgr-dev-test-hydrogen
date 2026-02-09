@@ -84,6 +84,12 @@ function AccountMenu() {
       >
         Addresses
       </NavLink>
+      <NavLink 
+        to="/account/wishlist" 
+        className={({isActive}) => `account-nav__link ${isActive ? 'account-nav__link--active' : ''}`}
+      >
+        Wishlist
+      </NavLink>
       <Logout />
     </nav>
   );

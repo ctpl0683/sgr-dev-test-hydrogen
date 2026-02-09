@@ -9,6 +9,17 @@
 
 const ADMIN_API_VERSION = '2024-01';
 
+// Store environment context (set by route handlers)
+let envContext = null;
+
+/**
+ * Set environment context from route handler
+ * @param {Object} env - Environment variables from context.env
+ */
+export function setEnvContext(env) {
+  envContext = env;
+}
+
 /**
  * Execute a GraphQL query against the Shopify Admin API
  * @param {string} query - GraphQL query string
@@ -16,12 +27,12 @@ const ADMIN_API_VERSION = '2024-01';
  * @returns {Promise<Object>} - Query response data
  */
 export async function adminApiQuery(query, variables = {}) {
-  const storeDomain = process.env.PUBLIC_STORE_DOMAIN;
-  const accessToken = process.env.SHOPIFY_ADMIN_API_ACCESS_TOKEN;
+  const storeDomain = envContext?.PUBLIC_STORE_DOMAIN;
+  const accessToken = envContext?.SHOPIFY_ADMIN_API_ACCESS_TOKEN;
 
   if (!storeDomain || !accessToken) {
     throw new Error(
-      'Missing required environment variables: PUBLIC_STORE_DOMAIN and SHOPIFY_ADMIN_API_ACCESS_TOKEN'
+      'Missing required environment variables: PUBLIC_STORE_DOMAIN and SHOPIFY_ADMIN_API_ACCESS_TOKEN. Make sure setEnvContext is called first.'
     );
   }
 
