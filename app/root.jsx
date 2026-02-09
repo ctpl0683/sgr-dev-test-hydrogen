@@ -8,7 +8,9 @@ import {
   Scripts,
   ScrollRestoration,
   useRouteLoaderData,
+  Await,
 } from 'react-router';
+import {Suspense} from 'react';
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import {
@@ -23,6 +25,7 @@ import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
 import {PageLayout} from './components/PageLayout';
 import {ThemeSettingsProvider} from '~/context/ThemeSettingsContext';
+import {WishlistProvider} from '~/context/WishlistContext';
 import {AnnouncementBar} from '~/components/AnnouncementBar';
 import {ThemeStyles} from '~/components/ThemeStyles';
 
@@ -172,10 +175,18 @@ function loadDeferredData({context}) {
       console.error(error);
       return null;
     });
+
+  // Get customer ID for wishlist functionality
+  const customerId = customerAccount
+    .query(CUSTOMER_ID_QUERY)
+    .then((result) => result?.data?.customer?.id || null)
+    .catch(() => null);
+
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
+    customerId,
   };
 }
 
@@ -277,6 +288,35 @@ export default function App() {
       announcement={data.announcement}
       socialLinks={data.socialLinks}
     >
+      <Suspense fallback={<WishlistProviderFallback data={data} />}>
+        <Await resolve={data.customerId} errorElement={<WishlistProviderFallback data={data} />}>
+          {(customerId) => (
+            <WishlistProvider customerId={customerId}>
+              <ThemeStyles />
+              <Analytics.Provider
+                cart={data.cart}
+                shop={data.shop}
+                consent={data.consent}
+              >
+                <AnnouncementBar />
+                <PageLayout {...data}>
+                  <Outlet />
+                </PageLayout>
+              </Analytics.Provider>
+            </WishlistProvider>
+          )}
+        </Await>
+      </Suspense>
+    </ThemeSettingsProvider>
+  );
+}
+
+/**
+ * Fallback component when customerId is loading or errored
+ */
+function WishlistProviderFallback({data}) {
+  return (
+    <WishlistProvider customerId={null}>
       <ThemeStyles />
       <Analytics.Provider
         cart={data.cart}
@@ -288,7 +328,7 @@ export default function App() {
           <Outlet />
         </PageLayout>
       </Analytics.Provider>
-    </ThemeSettingsProvider>
+    </WishlistProvider>
   );
 }
 
@@ -322,3 +362,12 @@ export function ErrorBoundary() {
 /** @typedef {import('react-router').ShouldRevalidateFunction} ShouldRevalidateFunction */
 /** @typedef {import('./+types/root').Route} Route */
 /** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */
+
+// Customer Account API query to get customer ID for wishlist
+const CUSTOMER_ID_QUERY = `
+  query CustomerIdQuery {
+    customer {
+      id
+    }
+  }
+`;

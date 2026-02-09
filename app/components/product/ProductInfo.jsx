@@ -2,6 +2,7 @@ import {Link, useNavigate} from 'react-router';
 import {Money} from '@shopify/hydrogen';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
+import {WishlistButton} from '~/components/wishlist';
 
 /**
  * ProductInfo Component
@@ -25,8 +26,11 @@ export function ProductInfo({product, selectedVariant, productOptions}) {
         <span className="product-info__vendor">{vendor}</span>
       )}
 
-      {/* Title */}
-      <h1 className="product-info__title">{title}</h1>
+      {/* Title & Wishlist */}
+      <div className="product-info__title-row">
+        <h1 className="product-info__title">{title}</h1>
+        <WishlistButton productId={product.id} size="large" />
+      </div>
 
       {/* Price */}
       <div className="product-info__price">

@@ -8,6 +8,7 @@ import {Link, useLoaderData} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import {useWishlist} from '~/context/WishlistContext';
 import {WishlistButton} from '~/components/wishlist';
+import {useState, useEffect} from 'react';
 
 /**
  * @type {Route.MetaFunction}
@@ -45,7 +46,7 @@ export default function WishlistPage() {
         </p>
       </header>
 
-      <WishlistContent customerId={customerId} />
+      <WishlistContent />
     </div>
   );
 }
@@ -54,20 +55,117 @@ export default function WishlistPage() {
  * Wishlist Content Component
  * Uses the WishlistContext to display products
  */
-function WishlistContent({customerId}) {
-  // This component will use the WishlistContext
-  // For now, show a placeholder that explains how to use it
-  
+function WishlistContent() {
+  const {wishlist, isLoading, wishlistCount} = useWishlist();
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(false);
+
+  // Fetch product details when wishlist changes
+  useEffect(() => {
+    async function fetchProducts() {
+      if (!wishlist || wishlist.length === 0) {
+        setProducts([]);
+        return;
+      }
+
+      setLoadingProducts(true);
+      try {
+        // Extract numeric IDs from GIDs
+        const productIds = wishlist.map(gid => {
+          const match = gid.match(/Product\/(\d+)/);
+          return match ? match[1] : null;
+        }).filter(Boolean);
+
+        // Fetch products via Storefront API
+        const response = await fetch('/api/wishlist-products', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({productIds}),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setProducts(data.products || []);
+        }
+      } catch (error) {
+        console.error('Error fetching wishlist products:', error);
+      } finally {
+        setLoadingProducts(false);
+      }
+    }
+
+    fetchProducts();
+  }, [wishlist]);
+
+  if (isLoading || loadingProducts) {
+    return (
+      <div className="wishlist-page__content">
+        <div className="wishlist-page__loading">
+          <p>Loading your wishlist...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (wishlistCount === 0) {
+    return (
+      <div className="wishlist-page__content">
+        <div className="wishlist-page__empty">
+          <HeartIcon />
+          <h2>Your wishlist is empty</h2>
+          <p>Save items you love by clicking the heart icon on any product.</p>
+          <Link to="/collections/all" className="button button--primary">
+            Start Shopping
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="wishlist-page__content">
-      <div className="wishlist-page__empty">
-        <HeartIcon />
-        <h2>Your wishlist is empty</h2>
-        <p>Save items you love by clicking the heart icon on any product.</p>
-        <Link to="/collections/all" className="button button--primary">
-          Start Shopping
-        </Link>
+      <p className="wishlist-page__count">{wishlistCount} item{wishlistCount !== 1 ? 's' : ''}</p>
+      <div className="wishlist-page__grid">
+        {products.map((product) => (
+          <WishlistProductCard key={product.id} product={product} />
+        ))}
       </div>
+    </div>
+  );
+}
+
+/**
+ * Wishlist Product Card
+ */
+function WishlistProductCard({product}) {
+  const image = product.featuredImage;
+  const price = product.priceRange?.minVariantPrice;
+
+  return (
+    <div className="wishlist-product-card">
+      <WishlistButton 
+        productId={product.id} 
+        className="wishlist-product-card__remove"
+        size="small"
+      />
+      <Link to={`/products/${product.handle}`} className="wishlist-product-card__link">
+        {image && (
+          <Image
+            alt={image.altText || product.title}
+            className="wishlist-product-card__image"
+            data={image}
+            sizes="(min-width: 768px) 25vw, 50vw"
+          />
+        )}
+        <div className="wishlist-product-card__info">
+          <h3 className="wishlist-product-card__title">{product.title}</h3>
+          {price && (
+            <div className="wishlist-product-card__price">
+              <Money data={price} />
+            </div>
+          )}
+        </div>
+      </Link>
     </div>
   );
 }
