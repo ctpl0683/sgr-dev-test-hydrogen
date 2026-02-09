@@ -5,7 +5,7 @@
  * POST /api/wishlist - Add/remove from wishlist
  */
 
-import {json} from '@shopify/remix-oxygen';
+import {data} from 'react-router';
 import {
   getCustomerWishlist,
   addToWishlist,
@@ -22,19 +22,19 @@ export async function loader({request}) {
   const customerId = url.searchParams.get('customerId');
 
   if (!customerId) {
-    return json({success: false, error: 'Customer ID is required'}, {status: 400});
+    return data({success: false, error: 'Customer ID is required'}, {status: 400});
   }
 
   if (!isValidCustomerId(customerId)) {
-    return json({success: false, error: 'Invalid customer ID format'}, {status: 400});
+    return data({success: false, error: 'Invalid customer ID format'}, {status: 400});
   }
 
   try {
     const wishlist = await getCustomerWishlist(customerId);
-    return json({success: true, wishlist});
+    return data({success: true, wishlist});
   } catch (error) {
     console.error('Wishlist fetch error:', error);
-    return json({success: false, error: 'Failed to fetch wishlist'}, {status: 500});
+    return data({success: false, error: 'Failed to fetch wishlist'}, {status: 500});
   }
 }
 
@@ -44,7 +44,7 @@ export async function loader({request}) {
  */
 export async function action({request}) {
   if (request.method !== 'POST') {
-    return json({success: false, error: 'Method not allowed'}, {status: 405});
+    return data({success: false, error: 'Method not allowed'}, {status: 405});
   }
 
   try {
@@ -53,17 +53,17 @@ export async function action({request}) {
 
     // Validate action
     if (!wishlistAction || !['add', 'remove'].includes(wishlistAction)) {
-      return json({success: false, error: 'Invalid action. Use "add" or "remove"'}, {status: 400});
+      return data({success: false, error: 'Invalid action. Use "add" or "remove"'}, {status: 400});
     }
 
     // Validate customer ID
     if (!customerId || !isValidCustomerId(customerId)) {
-      return json({success: false, error: 'Valid customer ID is required'}, {status: 400});
+      return data({success: false, error: 'Valid customer ID is required'}, {status: 400});
     }
 
     // Validate product ID
     if (!productId || !isValidProductId(productId)) {
-      return json({success: false, error: 'Valid product ID is required'}, {status: 400});
+      return data({success: false, error: 'Valid product ID is required'}, {status: 400});
     }
 
     // Execute action
@@ -75,12 +75,12 @@ export async function action({request}) {
     }
 
     if (!result.success) {
-      return json({success: false, error: result.error}, {status: 500});
+      return data({success: false, error: result.error}, {status: 500});
     }
 
-    return json({success: true, wishlist: result.wishlist});
+    return data({success: true, wishlist: result.wishlist});
   } catch (error) {
     console.error('Wishlist action error:', error);
-    return json({success: false, error: 'Failed to update wishlist'}, {status: 500});
+    return data({success: false, error: 'Failed to update wishlist'}, {status: 500});
   }
 }
