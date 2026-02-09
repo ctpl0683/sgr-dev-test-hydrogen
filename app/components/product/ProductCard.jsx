@@ -1,6 +1,7 @@
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
+import {WishlistButton} from '~/components/wishlist';
 
 /**
  * ProductCard Component
@@ -33,6 +34,13 @@ export function ProductCard({
       prefetch="intent"
       to={variantUrl}
     >
+      {/* Wishlist Button */}
+      <WishlistButton 
+        productId={product.id} 
+        className="product-card__wishlist"
+        size="small"
+      />
+
       {/* Image Container */}
       <div className="product-card__media" style={{'--aspect-ratio': aspectRatio}}>
         {image && (
