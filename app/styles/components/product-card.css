@@ -132,6 +132,7 @@
   display: block;
   text-decoration: none;
   color: var(--color-foreground);
+  position: relative;
 }
 
 .product-item img {
