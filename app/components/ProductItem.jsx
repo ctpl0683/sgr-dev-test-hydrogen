@@ -1,6 +1,7 @@
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
+import { WishlistButton } from './wishlist';
 
 /**
  * @param {{
@@ -21,6 +22,11 @@ export function ProductItem({product, loading}) {
       prefetch="intent"
       to={variantUrl}
     >
+      <WishlistButton 
+        productId={product.id} 
+        className="product-card__wishlist"
+        size="small"
+      />
       {image && (
         <Image
           alt={image.altText || product.title}

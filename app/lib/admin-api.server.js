@@ -2,8 +2,10 @@
  * Admin API Client for Hydrogen
  * Used for server-side operations that require Admin API access
  * 
+ * Uses client credentials grant flow to obtain access tokens.
  * Required environment variables:
- * - SHOPIFY_ADMIN_API_ACCESS_TOKEN: Admin API access token
+ * - SHOPIFY_ADMIN_CLIENT_ID: Admin API client ID
+ * - SHOPIFY_ADMIN_CLIENT_SECRET: Admin API client secret
  * - PUBLIC_STORE_DOMAIN: Your store domain (e.g., your-store.myshopify.com)
  */
 
@@ -11,6 +13,10 @@ const ADMIN_API_VERSION = '2024-01';
 
 // Store environment context (set by route handlers)
 let envContext = null;
+
+// Cache for access token (valid for 24 hours, we'll refresh after 23 hours)
+let cachedToken = null;
+let tokenExpiresAt = 0;
 
 /**
  * Set environment context from route handler
@@ -21,6 +27,57 @@ export function setEnvContext(env) {
 }
 
 /**
+ * Get Admin API access token using client credentials grant
+ * @returns {Promise<string>} - Access token
+ */
+async function getAccessToken() {
+  const storeDomain = envContext?.PUBLIC_STORE_DOMAIN;
+  const clientId = envContext?.SHOPIFY_ADMIN_CLIENT_ID;
+  const clientSecret = envContext?.SHOPIFY_ADMIN_CLIENT_SECRET;
+
+  if (!storeDomain || !clientId || !clientSecret) {
+    throw new Error(
+      'Missing required environment variables: PUBLIC_STORE_DOMAIN, SHOPIFY_ADMIN_CLIENT_ID, and SHOPIFY_ADMIN_CLIENT_SECRET'
+    );
+  }
+
+  // Check if we have a valid cached token (with 1 hour buffer)
+  const now = Date.now();
+  if (cachedToken && tokenExpiresAt > now + 3600000) {
+    return cachedToken;
+  }
+
+  // Request new token using client credentials grant
+  const tokenEndpoint = `https://${storeDomain}/admin/oauth/access_token`;
+  
+  const response = await fetch(tokenEndpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      client_id: clientId,
+      client_secret: clientSecret,
+    }),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    console.error('Failed to get Admin API access token:', errorText);
+    throw new Error(`Failed to get Admin API access token: ${response.status}`);
+  }
+
+  const data = await response.json();
+  
+  // Cache the token
+  cachedToken = data.access_token;
+  tokenExpiresAt = now + (data.expires_in * 1000);
+
+  return cachedToken;
+}
+
+/**
  * Execute a GraphQL query against the Shopify Admin API
  * @param {string} query - GraphQL query string
  * @param {Object} variables - Query variables
@@ -28,14 +85,12 @@ export function setEnvContext(env) {
  */
 export async function adminApiQuery(query, variables = {}) {
   const storeDomain = envContext?.PUBLIC_STORE_DOMAIN;
-  const accessToken = envContext?.SHOPIFY_ADMIN_API_ACCESS_TOKEN;
 
-  if (!storeDomain || !accessToken) {
-    throw new Error(
-      'Missing required environment variables: PUBLIC_STORE_DOMAIN and SHOPIFY_ADMIN_API_ACCESS_TOKEN. Make sure setEnvContext is called first.'
-    );
+  if (!storeDomain) {
+    throw new Error('Missing PUBLIC_STORE_DOMAIN environment variable');
   }
 
+  const accessToken = await getAccessToken();
   const endpoint = `https://${storeDomain}/admin/api/${ADMIN_API_VERSION}/graphql.json`;
 
   const response = await fetch(endpoint, {
