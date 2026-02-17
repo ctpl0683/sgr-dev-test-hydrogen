@@ -22,6 +22,35 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    directives: {
+      scriptSrc: [
+        "'self'",
+        'https://cdn.shopify.com',
+        'https://staticw2.yotpo.com',
+        'https://*.yotpo.com',
+      ],
+      connectSrc: [
+        "'self'",
+        'https://monorail-edge.shopifysvc.com',
+        'https://*.yotpo.com',
+      ],
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        'https://cdn.shopify.com',
+        'https://*.yotpo.com',
+      ],
+      imgSrc: [
+        "'self'",
+        'data:',
+        'https://cdn.shopify.com',
+        'https://*.yotpo.com',
+      ],
+      frameSrc: [
+        "'self'",
+        'https://*.yotpo.com',
+      ],
+    },
   });
 
   const body = await renderToReadableStream(

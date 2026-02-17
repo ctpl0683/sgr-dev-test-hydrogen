@@ -32,55 +32,6 @@ export default {
 
       const response = await handleRequest(request);
 
-      // Add CSP headers to allow Yotpo and other required external scripts
-      const cspHeader = response.headers.get('Content-Security-Policy');
-      if (cspHeader) {
-        // Modify existing CSP to include Yotpo domains
-        let newCsp = cspHeader;
-        
-        // Add Yotpo to script-src
-        if (newCsp.includes('script-src')) {
-          newCsp = newCsp.replace(
-            /script-src([^;]*)/,
-            "script-src$1 https://staticw2.yotpo.com https://*.yotpo.com"
-          );
-        }
-        
-        // Add Yotpo to connect-src
-        if (newCsp.includes('connect-src')) {
-          newCsp = newCsp.replace(
-            /connect-src([^;]*)/,
-            "connect-src$1 https://*.yotpo.com"
-          );
-        }
-        
-        // Add Yotpo to style-src
-        if (newCsp.includes('style-src')) {
-          newCsp = newCsp.replace(
-            /style-src([^;]*)/,
-            "style-src$1 https://*.yotpo.com"
-          );
-        }
-        
-        // Add Yotpo to img-src
-        if (newCsp.includes('img-src')) {
-          newCsp = newCsp.replace(
-            /img-src([^;]*)/,
-            "img-src$1 https://*.yotpo.com"
-          );
-        }
-        
-        // Add Yotpo to frame-src
-        if (newCsp.includes('frame-src')) {
-          newCsp = newCsp.replace(
-            /frame-src([^;]*)/,
-            "frame-src$1 https://*.yotpo.com"
-          );
-        }
-        
-        response.headers.set('Content-Security-Policy', newCsp);
-      }
-
       if (hydrogenContext.session.isPending) {
         response.headers.set(
           'Set-Cookie',
