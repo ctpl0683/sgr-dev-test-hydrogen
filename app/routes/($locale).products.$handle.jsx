@@ -9,6 +9,7 @@ import {
 } from '@shopify/hydrogen';
 import {ProductGallery, ProductInfo} from '~/components/product';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {YotpoReviewsWidget} from '~/components/yotpo';
 
 /**
  * @type {Route.MetaFunction}
@@ -121,6 +122,11 @@ export default function Product() {
             productOptions={productOptions}
           />
         </div>
+      </div>
+
+      {/* Yotpo Reviews Widget */}
+      <div className="product-page__reviews page-width">
+        <YotpoReviewsWidget product={product} />
       </div>
 
       <Analytics.ProductView

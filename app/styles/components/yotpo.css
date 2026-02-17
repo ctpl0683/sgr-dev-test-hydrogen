@@ -1,0 +1,33 @@
+/**
+ * ==========================================================================
+ * YOTPO REVIEWS STYLES
+ * ==========================================================================
+ * Styles for Yotpo reviews widget and star rating integration
+ */
+
+/* ==========================================================================
+   REVIEWS WIDGET CONTAINER
+   ========================================================================== */
+
+.product-page__reviews {
+  margin-top: var(--spacing-16);
+  padding-top: var(--spacing-12);
+  border-top: 1px solid rgb(var(--color-foreground-rgb) / 0.1);
+}
+
+.yotpo-reviews-widget {
+  margin-bottom: var(--spacing-8);
+}
+
+/* ==========================================================================
+   STAR RATING
+   ========================================================================== */
+
+.yotpo-star-rating {
+  margin-bottom: var(--spacing-4);
+}
+
+/* Ensure Yotpo widgets inherit theme styles */
+.yotpo-widget-instance {
+  font-family: var(--font-body-family);
+}
