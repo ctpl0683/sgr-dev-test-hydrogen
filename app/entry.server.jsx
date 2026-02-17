@@ -26,37 +26,12 @@ export default async function handleRequest(
 
   // Modify CSP header to allow Yotpo domains
   const yotpoDomains = 'https://staticw2.yotpo.com https://*.yotpo.com';
-  let modifiedHeader = header;
-  
-  // Add Yotpo to script-src
-  modifiedHeader = modifiedHeader.replace(
-    /script-src([^;]*)/,
-    `script-src$1 ${yotpoDomains}`
-  );
-  
-  // Add Yotpo to connect-src
-  modifiedHeader = modifiedHeader.replace(
-    /connect-src([^;]*)/,
-    `connect-src$1 ${yotpoDomains}`
-  );
-  
-  // Add Yotpo to style-src
-  modifiedHeader = modifiedHeader.replace(
-    /style-src([^;]*)/,
-    `style-src$1 ${yotpoDomains}`
-  );
-  
-  // Add Yotpo to img-src
-  modifiedHeader = modifiedHeader.replace(
-    /img-src([^;]*)/,
-    `img-src$1 ${yotpoDomains}`
-  );
-  
-  // Add Yotpo to frame-src
-  modifiedHeader = modifiedHeader.replace(
-    /frame-src([^;]*)/,
-    `frame-src$1 ${yotpoDomains}`
-  );
+  let modifiedHeader = header
+    .replace(/script-src([^;]*)/, `script-src$1 ${yotpoDomains}`)
+    .replace(/connect-src([^;]*)/, `connect-src$1 ${yotpoDomains}`)
+    .replace(/style-src([^;]*)/, `style-src$1 ${yotpoDomains}`)
+    .replace(/img-src([^;]*)/, `img-src$1 ${yotpoDomains}`)
+    .replace(/frame-src([^;]*)/, `frame-src$1 ${yotpoDomains}`);
 
   const body = await renderToReadableStream(
     <NonceProvider>

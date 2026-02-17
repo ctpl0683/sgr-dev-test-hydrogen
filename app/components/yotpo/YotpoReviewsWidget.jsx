@@ -1,5 +1,54 @@
 import {useEffect, useRef} from 'react';
 
+// Yotpo App Key
+const YOTPO_APP_KEY = '1286083';
+
+/**
+ * Load Yotpo script dynamically
+ * This avoids CSP issues by loading the script via DOM manipulation
+ */
+function loadYotpoScript() {
+  if (typeof window === 'undefined') return Promise.resolve();
+  
+  // Check if already loaded
+  if (window.yotpo || document.querySelector(`script[src*="yotpo.com/${YOTPO_APP_KEY}"]`)) {
+    return Promise.resolve();
+  }
+
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = `https://staticw2.yotpo.com/${YOTPO_APP_KEY}/widget.js`;
+    script.async = true;
+    script.onload = resolve;
+    script.onerror = resolve; // Resolve anyway to not block
+    document.head.appendChild(script);
+  });
+}
+
+/**
+ * Initialize Yotpo widgets using their AJAX method
+ */
+function initYotpoWidgets() {
+  if (typeof window === 'undefined') return;
+  
+  // New widgets API (recommended by Yotpo)
+  if (window.yotpoWidgetsContainer && typeof window.yotpoWidgetsContainer.initWidgets === 'function') {
+    window.yotpoWidgetsContainer.initWidgets();
+    return;
+  }
+  
+  // Legacy widgets API
+  if (window.yotpo && typeof window.yotpo.initWidgets === 'function') {
+    window.yotpo.initWidgets();
+    return;
+  }
+  
+  // Alternative refresh method
+  if (window.yotpo && typeof window.yotpo.refreshWidgets === 'function') {
+    window.yotpo.refreshWidgets();
+  }
+}
+
 /**
  * Yotpo Reviews Widget Component
  * Displays the main reviews widget on product pages
@@ -25,35 +74,34 @@ export function YotpoReviewsWidget({product, shopUrl = ''}) {
   const imageUrl = product.featuredImage?.url || '';
   const price = product.priceRange?.minVariantPrice?.amount || '0';
   const currency = product.priceRange?.minVariantPrice?.currencyCode || 'USD';
-  const description = product.description || '';
 
-  // Reinitialize Yotpo widgets after component mounts (for client-side navigation)
+  // Load Yotpo script and initialize widgets
   useEffect(() => {
-    const initYotpo = () => {
-      if (typeof window !== 'undefined') {
-        // Try multiple Yotpo initialization methods
-        if (window.yotpo) {
-          window.yotpo.refreshWidgets();
-        }
-        // Alternative: Yotpo V3 API
-        if (window.Yotpo && window.Yotpo.API) {
-          window.Yotpo.API('refreshWidgets');
-        }
-      }
-    };
-
-    // Try immediately
-    initYotpo();
+    let mounted = true;
     
-    // Also try after delays to handle async script loading
-    const timer1 = setTimeout(initYotpo, 500);
-    const timer2 = setTimeout(initYotpo, 1500);
-    const timer3 = setTimeout(initYotpo, 3000);
+    const init = async () => {
+      await loadYotpoScript();
+      
+      if (!mounted) return;
+      
+      // Wait for script to initialize
+      const tryInit = () => {
+        if (window.yotpo || window.yotpoWidgetsContainer) {
+          initYotpoWidgets();
+        }
+      };
+      
+      // Try multiple times with delays
+      tryInit();
+      setTimeout(tryInit, 500);
+      setTimeout(tryInit, 1500);
+      setTimeout(tryInit, 3000);
+    };
+    
+    init();
     
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
+      mounted = false;
     };
   }, [productId]);
 
@@ -61,7 +109,7 @@ export function YotpoReviewsWidget({product, shopUrl = ''}) {
     <div className="yotpo-reviews-widget" ref={widgetRef}>
       <div
         className="yotpo-widget-instance"
-        data-yotpo-instance-id="1286083"
+        data-yotpo-instance-id={YOTPO_APP_KEY}
         data-yotpo-product-id={productId}
         data-yotpo-name={product.title}
         data-yotpo-url={productUrl}
@@ -91,26 +139,31 @@ export function YotpoStarRating({product, shopUrl = ''}) {
   const productId = extractProductId(product.id);
   const productUrl = `${shopUrl}/products/${product.handle}`;
 
-  // Reinitialize Yotpo widgets after component mounts
+  // Load Yotpo script and initialize widgets
   useEffect(() => {
-    const initYotpo = () => {
-      if (typeof window !== 'undefined') {
-        if (window.yotpo) {
-          window.yotpo.refreshWidgets();
+    let mounted = true;
+    
+    const init = async () => {
+      await loadYotpoScript();
+      
+      if (!mounted) return;
+      
+      // Try multiple times with delays
+      const tryInit = () => {
+        if (window.yotpo || window.yotpoWidgetsContainer) {
+          initYotpoWidgets();
         }
-        if (window.Yotpo && window.Yotpo.API) {
-          window.Yotpo.API('refreshWidgets');
-        }
-      }
+      };
+      
+      tryInit();
+      setTimeout(tryInit, 500);
+      setTimeout(tryInit, 1500);
     };
-
-    initYotpo();
-    const timer1 = setTimeout(initYotpo, 500);
-    const timer2 = setTimeout(initYotpo, 1500);
+    
+    init();
     
     return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
+      mounted = false;
     };
   }, [productId]);
 
@@ -118,7 +171,7 @@ export function YotpoStarRating({product, shopUrl = ''}) {
     <div className="yotpo-star-rating">
       <div
         className="yotpo-widget-instance"
-        data-yotpo-instance-id="1286083"
+        data-yotpo-instance-id={YOTPO_APP_KEY}
         data-yotpo-product-id={productId}
         data-yotpo-name={product.title}
         data-yotpo-url={productUrl}
