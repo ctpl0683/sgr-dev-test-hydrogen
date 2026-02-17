@@ -22,36 +22,41 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    directives: {
-      scriptSrc: [
-        "'self'",
-        'https://cdn.shopify.com',
-        'https://staticw2.yotpo.com',
-        'https://*.yotpo.com',
-      ],
-      connectSrc: [
-        "'self'",
-        'https://monorail-edge.shopifysvc.com',
-        'https://*.yotpo.com',
-      ],
-      styleSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://cdn.shopify.com',
-        'https://*.yotpo.com',
-      ],
-      imgSrc: [
-        "'self'",
-        'data:',
-        'https://cdn.shopify.com',
-        'https://*.yotpo.com',
-      ],
-      frameSrc: [
-        "'self'",
-        'https://*.yotpo.com',
-      ],
-    },
   });
+
+  // Modify CSP header to allow Yotpo domains
+  const yotpoDomains = 'https://staticw2.yotpo.com https://*.yotpo.com';
+  let modifiedHeader = header;
+  
+  // Add Yotpo to script-src
+  modifiedHeader = modifiedHeader.replace(
+    /script-src([^;]*)/,
+    `script-src$1 ${yotpoDomains}`
+  );
+  
+  // Add Yotpo to connect-src
+  modifiedHeader = modifiedHeader.replace(
+    /connect-src([^;]*)/,
+    `connect-src$1 ${yotpoDomains}`
+  );
+  
+  // Add Yotpo to style-src
+  modifiedHeader = modifiedHeader.replace(
+    /style-src([^;]*)/,
+    `style-src$1 ${yotpoDomains}`
+  );
+  
+  // Add Yotpo to img-src
+  modifiedHeader = modifiedHeader.replace(
+    /img-src([^;]*)/,
+    `img-src$1 ${yotpoDomains}`
+  );
+  
+  // Add Yotpo to frame-src
+  modifiedHeader = modifiedHeader.replace(
+    /frame-src([^;]*)/,
+    `frame-src$1 ${yotpoDomains}`
+  );
 
   const body = await renderToReadableStream(
     <NonceProvider>
@@ -76,7 +81,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', modifiedHeader);
 
   return new Response(body, {
     headers: responseHeaders,
