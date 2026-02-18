@@ -3,7 +3,7 @@ import {Money} from '@shopify/hydrogen';
 import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {WishlistButton} from '~/components/wishlist';
-import {YotpoStarRating} from '~/components/yotpo';
+import {YotpoStarRatingSummary} from '~/components/yotpo';
 
 /**
  * ProductInfo Component
@@ -34,7 +34,7 @@ export function ProductInfo({product, selectedVariant, productOptions}) {
       </div>
 
       {/* Yotpo Star Rating */}
-      <YotpoStarRating product={product} />
+      <YotpoStarRatingSummary product={product} />
 
       {/* Price */}
       <div className="product-info__price">

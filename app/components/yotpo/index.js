@@ -1,2 +1,1 @@
-export {YotpoReviewsWidget, YotpoStarRating} from './YotpoReviewsWidget';
-export {YotpoConversionTracking} from './YotpoConversionTracking';
+export {YotpoReviewsWidget, YotpoStarRatingSummary} from './YotpoReviews';
