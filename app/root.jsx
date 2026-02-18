@@ -226,6 +226,13 @@ export function Layout({children}) {
         {children}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
+        {/* Yotpo Reviews Script */}
+        <script
+          nonce={nonce}
+          type="text/javascript"
+          src="https://staticw2.yotpo.com/1286083/widget.js"
+          async
+        />
       </body>
     </html>
   );

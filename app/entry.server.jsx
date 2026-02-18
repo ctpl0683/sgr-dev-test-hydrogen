@@ -22,72 +22,64 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    directives: {
-      defaultSrc: [
-        "'self'",
-        'https://cdn.shopify.com',
-        'https://shopify.com',
-        'https://staticw2.yotpo.com',
-        'https://*.yotpo.com',
-        'data:',
-        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
-      ].filter(Boolean),
-      scriptSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://cdn.shopify.com',
-        'https://staticw2.yotpo.com',
-        'https://*.yotpo.com',
-        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
-      ].filter(Boolean),
-      scriptSrcElem: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://cdn.shopify.com',
-        'https://staticw2.yotpo.com',
-        'https://*.yotpo.com',
-        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
-      ].filter(Boolean),
-      styleSrc: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://cdn.shopify.com',
-        'https://*.yotpo.com',
-        'https://fonts.googleapis.com',
-      ],
-      styleSrcElem: [
-        "'self'",
-        "'unsafe-inline'",
-        'https://cdn.shopify.com',
-        'https://*.yotpo.com',
-        'https://fonts.googleapis.com',
-      ],
-      fontSrc: [
-        "'self'",
-        'https://fonts.gstatic.com',
-        'data:',
-      ],
-      imgSrc: [
-        "'self'",
-        'data:',
-        'https://cdn.shopify.com',
-        'https://*.yotpo.com',
-      ],
-      connectSrc: [
-        "'self'",
-        'https://monorail-edge.shopifysvc.com',
-        'https://*.yotpo.com',
-        context.env.NODE_ENV === 'development' ? 'ws://localhost:*' : null,
-        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
-      ].filter(Boolean),
-      frameSrc: [
-        "'self'",
-        'https://*.yotpo.com',
-      ],
-    },
   });
 
-  const modifiedHeader = header;
+  // Modify CSP header to allow Yotpo domains and Google Fonts
+  const yotpoDomains = 'https://staticw2.yotpo.com https://*.yotpo.com';
+  const googleFonts = 'https://fonts.googleapis.com https://fonts.gstatic.com';
+  
+  let modifiedHeader = header;
+  
+  // Add Yotpo to default-src (fallback for script-src-elem)
+  if (modifiedHeader.includes('default-src')) {
+    modifiedHeader = modifiedHeader.replace(/default-src([^;]*)/, `default-src$1 ${yotpoDomains}`);
+  }
+  
+  // Add Yotpo to script-src
+  if (modifiedHeader.includes('script-src')) {
+    modifiedHeader = modifiedHeader.replace(/script-src([^;]*)/, `script-src$1 ${yotpoDomains}`);
+  }
+  
+  // Add script-src-elem explicitly for Yotpo
+  if (!modifiedHeader.includes('script-src-elem')) {
+    modifiedHeader = modifiedHeader.replace(
+      /script-src([^;]*);/,
+      `script-src$1; script-src-elem 'self' 'unsafe-inline' https://cdn.shopify.com ${yotpoDomains};`
+    );
+  }
+  
+  // Add Yotpo to connect-src
+  if (modifiedHeader.includes('connect-src')) {
+    modifiedHeader = modifiedHeader.replace(/connect-src([^;]*)/, `connect-src$1 ${yotpoDomains}`);
+  }
+  
+  // Add Yotpo and Google Fonts to style-src
+  if (modifiedHeader.includes('style-src')) {
+    modifiedHeader = modifiedHeader.replace(/style-src([^;]*)/, `style-src$1 ${yotpoDomains} ${googleFonts}`);
+  }
+  
+  // Add style-src-elem for Google Fonts
+  if (!modifiedHeader.includes('style-src-elem')) {
+    modifiedHeader = modifiedHeader.replace(
+      /style-src([^;]*);/,
+      `style-src$1; style-src-elem 'self' 'unsafe-inline' https://cdn.shopify.com ${yotpoDomains} ${googleFonts};`
+    );
+  }
+  
+  // Add Yotpo to img-src
+  if (modifiedHeader.includes('img-src')) {
+    modifiedHeader = modifiedHeader.replace(/img-src([^;]*)/, `img-src$1 ${yotpoDomains}`);
+  }
+  
+  // Add Yotpo to frame-src
+  if (modifiedHeader.includes('frame-src')) {
+    modifiedHeader = modifiedHeader.replace(/frame-src([^;]*)/, `frame-src$1 ${yotpoDomains}`);
+  }
+  
+  // Add font-src for Google Fonts
+  if (modifiedHeader.includes('font-src')) {
+    modifiedHeader = modifiedHeader.replace(/font-src([^;]*)/, `font-src$1 ${googleFonts}`);
+  }
 
   const body = await renderToReadableStream(
     <NonceProvider>

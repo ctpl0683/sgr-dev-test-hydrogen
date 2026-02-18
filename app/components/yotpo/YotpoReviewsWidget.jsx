@@ -4,24 +4,26 @@ import {useEffect, useRef} from 'react';
 const YOTPO_APP_KEY = '1286083';
 
 /**
- * Load Yotpo script dynamically
- * This avoids CSP issues by loading the script via DOM manipulation
+ * Wait for Yotpo script to be ready
+ * Script is loaded in root.jsx with nonce attribute
  */
-function loadYotpoScript() {
-  if (typeof window === 'undefined') return Promise.resolve();
+function waitForYotpo(maxAttempts = 20) {
+  if (typeof window === 'undefined') return Promise.resolve(false);
   
-  // Check if already loaded
-  if (window.yotpo || document.querySelector(`script[src*="yotpo.com/${YOTPO_APP_KEY}"]`)) {
-    return Promise.resolve();
-  }
-
   return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = `https://staticw2.yotpo.com/${YOTPO_APP_KEY}/widget.js`;
-    script.async = true;
-    script.onload = resolve;
-    script.onerror = resolve; // Resolve anyway to not block
-    document.head.appendChild(script);
+    let attempts = 0;
+    const check = () => {
+      attempts++;
+      if (window.yotpo || window.yotpoWidgetsContainer) {
+        resolve(true);
+      } else if (attempts >= maxAttempts) {
+        console.warn('Yotpo script not loaded after', maxAttempts, 'attempts');
+        resolve(false);
+      } else {
+        setTimeout(check, 250);
+      }
+    };
+    check();
   });
 }
 
@@ -75,27 +77,17 @@ export function YotpoReviewsWidget({product, shopUrl = ''}) {
   const price = product.priceRange?.minVariantPrice?.amount || '0';
   const currency = product.priceRange?.minVariantPrice?.currencyCode || 'USD';
 
-  // Load Yotpo script and initialize widgets
+  // Wait for Yotpo script and initialize widgets
   useEffect(() => {
     let mounted = true;
     
     const init = async () => {
-      await loadYotpoScript();
+      const loaded = await waitForYotpo();
       
-      if (!mounted) return;
+      if (!mounted || !loaded) return;
       
-      // Wait for script to initialize
-      const tryInit = () => {
-        if (window.yotpo || window.yotpoWidgetsContainer) {
-          initYotpoWidgets();
-        }
-      };
-      
-      // Try multiple times with delays
-      tryInit();
-      setTimeout(tryInit, 500);
-      setTimeout(tryInit, 1500);
-      setTimeout(tryInit, 3000);
+      // Initialize widgets
+      initYotpoWidgets();
     };
     
     init();
@@ -139,25 +131,16 @@ export function YotpoStarRating({product, shopUrl = ''}) {
   const productId = extractProductId(product.id);
   const productUrl = `${shopUrl}/products/${product.handle}`;
 
-  // Load Yotpo script and initialize widgets
+  // Wait for Yotpo script and initialize widgets
   useEffect(() => {
     let mounted = true;
     
     const init = async () => {
-      await loadYotpoScript();
+      const loaded = await waitForYotpo();
       
-      if (!mounted) return;
+      if (!mounted || !loaded) return;
       
-      // Try multiple times with delays
-      const tryInit = () => {
-        if (window.yotpo || window.yotpoWidgetsContainer) {
-          initYotpoWidgets();
-        }
-      };
-      
-      tryInit();
-      setTimeout(tryInit, 500);
-      setTimeout(tryInit, 1500);
+      initYotpoWidgets();
     };
     
     init();
