@@ -17,6 +17,7 @@ A custom Shopify Hydrogen storefront with advanced features including wishlist f
    - [4.5 Product Page Enhancements](#-45-product-page-enhancements)
    - [4.6 ❤️ Wishlist Functionality](#-46-️-wishlist-functionality)
    - [4.7 Yotpo Reviews Integration](#-47-yotpo-reviews-integration)
+   - [4.8 💬 Tidio Live Chat](#-48-tidio-live-chat-integration)
 5. [API Routes Reference](#-api-routes-reference)
 6. [Deployment Guide](#-deployment-guide)
 7. [Troubleshooting](#-troubleshooting)
@@ -584,6 +585,62 @@ import { YotpoReviewsWidget } from '~/components/yotpo';
 | `/api/reviews?productId=xxx&bottomLineOnly=true` | GET | Fetch only rating summary |
 | `/api/reviews` | POST | Create a new review |
 | `/api/reviews` (intent=vote) | POST | Vote on a review |
+
+---
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   💬 4.8 TIDIO LIVE CHAT INTEGRATION                                         ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+<img src="docs/assets/tidio-logo.svg" alt="Tidio Logo" width="80" />
+
+### 📌 Overview
+
+Tidio Live Chat widget integration for real-time customer support and communication.
+
+### 🎯 Purpose
+
+- Provide real-time customer support via live chat
+- Enable automated chatbot responses
+- Improve customer engagement and conversion rates
+
+### 📁 Files Modified
+
+| File | Description |
+|------|-------------|
+| `app/root.jsx` | Added Tidio script tag in body |
+
+### ⚙️ Configuration
+
+The Tidio widget is loaded via a JavaScript snippet added to the root layout. The script loads asynchronously on all pages.
+
+**Script Location:** `app/root.jsx` (inside `<body>` tag)
+
+```jsx
+<script src="//code.tidio.co/YOUR_TIDIO_KEY.js" async></script>
+```
+
+### 💡 How to Get Your Tidio Script
+
+1. Log in to [Tidio Dashboard](https://www.tidio.com/)
+2. Go to **Settings** → **Channels** → **Live Chat** → **Installation**
+3. Copy the JavaScript snippet
+4. Replace the script in `app/root.jsx` with your unique key
+
+### 📚 References
+
+- [Tidio Installation Guide](https://www.tidio.com/blog/how-to-install-tidio/)
+- [Tidio Help Center](https://help.tidio.com/)
+
+### ✅ Features
+
+- ✅ Live chat with customers
+- ✅ Automated chatbot responses
+- ✅ Visitor tracking
+- ✅ Mobile-friendly widget
+- ✅ Loads asynchronously (no performance impact)
 
 ---
 

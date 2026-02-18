@@ -226,6 +226,8 @@ export function Layout({children}) {
         {children}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
+        {/* Tidio Live Chat Widget */}
+        <script src="//code.tidio.co/p4ksdctzfb88d0604qxigbp8cqr7ne20.js" async></script>
       </body>
     </html>
   );
