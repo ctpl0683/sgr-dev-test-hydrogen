@@ -1,4 +1,4 @@
-import {json} from '@shopify/remix-oxygen';
+import {data} from 'react-router';
 import {
   setYotpoEnvContext,
   getProductReviews,
@@ -24,13 +24,13 @@ export async function loader({request, context}) {
   const bottomLineOnly = url.searchParams.get('bottomLineOnly') === 'true';
 
   if (!productId) {
-    return json({error: 'productId is required'}, {status: 400});
+    return data({error: 'productId is required'}, {status: 400});
   }
 
   try {
     if (bottomLineOnly) {
       const bottomLine = await getProductBottomLine(productId);
-      return json({bottomLine});
+      return data({bottomLine});
     }
 
     const reviews = await getProductReviews(productId, {
@@ -41,7 +41,7 @@ export async function loader({request, context}) {
       star: star ? parseInt(star, 10) : null,
     });
 
-    return json({
+    return data({
       reviews: reviews.reviews || [],
       pagination: reviews.pagination || {page: 1, per_page: perPage, total: 0},
       bottomLine: {
@@ -53,7 +53,7 @@ export async function loader({request, context}) {
     });
   } catch (error) {
     console.error('Error fetching reviews:', error);
-    return json({error: error.message}, {status: 500});
+    return data({error: error.message}, {status: 500});
   }
 }
 
@@ -72,15 +72,15 @@ export async function action({request, context}) {
     const voteType = formData.get('voteType');
 
     if (!reviewId || !voteType) {
-      return json({error: 'reviewId and voteType are required'}, {status: 400});
+      return data({error: 'reviewId and voteType are required'}, {status: 400});
     }
 
     try {
       const result = await voteOnReview(reviewId, voteType);
-      return json({success: true, result});
+      return data({success: true, result});
     } catch (error) {
       console.error('Error voting on review:', error);
-      return json({error: error.message}, {status: 500});
+      return data({error: error.message}, {status: 500});
     }
   }
 
@@ -97,11 +97,11 @@ export async function action({request, context}) {
   const reviewScore = parseInt(formData.get('reviewScore'), 10);
 
   if (!productId || !productTitle || !productUrl || !reviewerName || !reviewerEmail || !reviewTitle || !reviewContent || !reviewScore) {
-    return json({error: 'Missing required fields'}, {status: 400});
+    return data({error: 'Missing required fields'}, {status: 400});
   }
 
   if (reviewScore < 1 || reviewScore > 5) {
-    return json({error: 'Review score must be between 1 and 5'}, {status: 400});
+    return data({error: 'Review score must be between 1 and 5'}, {status: 400});
   }
 
   try {
@@ -118,9 +118,9 @@ export async function action({request, context}) {
       reviewScore,
     });
 
-    return json({success: true, result});
+    return data({success: true, result});
   } catch (error) {
     console.error('Error creating review:', error);
-    return json({error: error.message}, {status: 500});
+    return data({error: error.message}, {status: 500});
   }
 }

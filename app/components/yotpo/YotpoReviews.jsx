@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import {useFetcher} from '@remix-run/react';
+import {useFetcher} from 'react-router';
 
 /**
  * Extract numeric product ID from Shopify GID
