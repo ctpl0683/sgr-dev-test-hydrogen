@@ -22,16 +22,72 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    directives: {
+      defaultSrc: [
+        "'self'",
+        'https://cdn.shopify.com',
+        'https://shopify.com',
+        'https://staticw2.yotpo.com',
+        'https://*.yotpo.com',
+        'data:',
+        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
+      ].filter(Boolean),
+      scriptSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        'https://cdn.shopify.com',
+        'https://staticw2.yotpo.com',
+        'https://*.yotpo.com',
+        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
+      ].filter(Boolean),
+      scriptSrcElem: [
+        "'self'",
+        "'unsafe-inline'",
+        'https://cdn.shopify.com',
+        'https://staticw2.yotpo.com',
+        'https://*.yotpo.com',
+        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
+      ].filter(Boolean),
+      styleSrc: [
+        "'self'",
+        "'unsafe-inline'",
+        'https://cdn.shopify.com',
+        'https://*.yotpo.com',
+        'https://fonts.googleapis.com',
+      ],
+      styleSrcElem: [
+        "'self'",
+        "'unsafe-inline'",
+        'https://cdn.shopify.com',
+        'https://*.yotpo.com',
+        'https://fonts.googleapis.com',
+      ],
+      fontSrc: [
+        "'self'",
+        'https://fonts.gstatic.com',
+        'data:',
+      ],
+      imgSrc: [
+        "'self'",
+        'data:',
+        'https://cdn.shopify.com',
+        'https://*.yotpo.com',
+      ],
+      connectSrc: [
+        "'self'",
+        'https://monorail-edge.shopifysvc.com',
+        'https://*.yotpo.com',
+        context.env.NODE_ENV === 'development' ? 'ws://localhost:*' : null,
+        context.env.NODE_ENV === 'development' ? 'http://localhost:*' : null,
+      ].filter(Boolean),
+      frameSrc: [
+        "'self'",
+        'https://*.yotpo.com',
+      ],
+    },
   });
 
-  // Modify CSP header to allow Yotpo domains
-  const yotpoDomains = 'https://staticw2.yotpo.com https://*.yotpo.com';
-  let modifiedHeader = header
-    .replace(/script-src([^;]*)/, `script-src$1 ${yotpoDomains}`)
-    .replace(/connect-src([^;]*)/, `connect-src$1 ${yotpoDomains}`)
-    .replace(/style-src([^;]*)/, `style-src$1 ${yotpoDomains}`)
-    .replace(/img-src([^;]*)/, `img-src$1 ${yotpoDomains}`)
-    .replace(/frame-src([^;]*)/, `frame-src$1 ${yotpoDomains}`);
+  const modifiedHeader = header;
 
   const body = await renderToReadableStream(
     <NonceProvider>
