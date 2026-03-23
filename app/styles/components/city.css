@@ -1,0 +1,316 @@
+/**
+ * ==========================================================================
+ * CITY SELECTOR STYLES
+ * ==========================================================================
+ * Styles for city selection components
+ */
+
+/* City Selector */
+.city-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.city-selector__icon {
+  color: var(--color-text-secondary, #666);
+  flex-shrink: 0;
+}
+
+.city-selector__label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #666);
+  white-space: nowrap;
+}
+
+.city-selector__wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.city-selector__select {
+  padding: 0.375rem 1.75rem 0.375rem 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text, #333);
+  border: 1px solid var(--color-border, #e5e5e5);
+  border-radius: 4px;
+  background-color: var(--color-background, #fff);
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.city-selector__select:hover {
+  border-color: var(--color-border-hover, #ccc);
+}
+
+.city-selector__select:focus {
+  outline: none;
+  border-color: var(--color-primary, #000);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.city-selector__chevron {
+  position: absolute;
+  right: 0.5rem;
+  pointer-events: none;
+  color: var(--color-text-secondary, #666);
+}
+
+/* City Banner */
+.city-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-background-secondary, #f5f5f5);
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.city-banner__icon {
+  color: var(--color-primary, #000);
+  flex-shrink: 0;
+}
+
+.city-banner__text {
+  color: var(--color-text, #333);
+}
+
+.city-banner__text strong {
+  font-weight: 600;
+}
+
+.city-banner__selector .city-selector__select {
+  padding: 0.25rem 1.25rem 0.25rem 0.375rem;
+  font-size: 0.75rem;
+  border: none;
+  background-color: transparent;
+}
+
+.city-banner__selector .city-selector__chevron {
+  right: 0.25rem;
+}
+
+/* Compact City Selector (Header) */
+.city-selector-compact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.city-selector-compact:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+.city-selector-compact__icon {
+  color: var(--color-text-secondary, #666);
+  flex-shrink: 0;
+}
+
+.city-selector-compact__select {
+  padding: 0;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-text, #333);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.city-selector-compact__select:focus {
+  outline: none;
+}
+
+/* City Selection Modal */
+.city-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.city-modal {
+  width: 100%;
+  max-width: 400px;
+  padding: 1.5rem;
+  background-color: var(--color-background, #fff);
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.city-modal__title {
+  margin: 0 0 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text, #333);
+  text-align: center;
+}
+
+.city-modal__description {
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #666);
+  text-align: center;
+}
+
+.city-modal__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.city-modal__option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: var(--color-text, #333);
+  background-color: var(--color-background-secondary, #f5f5f5);
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.city-modal__option:hover {
+  background-color: var(--color-background-tertiary, #eee);
+}
+
+.city-modal__option--selected {
+  border-color: var(--color-primary, #000);
+  background-color: var(--color-primary-light, #f0f0f0);
+}
+
+.city-modal__close {
+  width: 100%;
+  padding: 0.875rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-background, #fff);
+  background-color: var(--color-primary, #000);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.city-modal__close:hover {
+  background-color: var(--color-primary-hover, #333);
+}
+
+/* Product Page City Indicator */
+.product-city-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  background-color: var(--color-info-bg, #e8f4fd);
+  border-radius: 6px;
+  font-size: 0.875rem;
+  color: var(--color-info-text, #1a73e8);
+}
+
+.product-city-indicator__icon {
+  flex-shrink: 0;
+}
+
+.product-city-indicator__text {
+  flex: 1;
+}
+
+.product-city-indicator__change {
+  font-weight: 600;
+  color: var(--color-primary, #000);
+  text-decoration: underline;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.product-city-indicator__change:hover {
+  text-decoration: none;
+}
+
+/* Product Info City Indicator */
+.product-info__city-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.625rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary, #666);
+  background-color: var(--color-background-secondary, #f5f5f5);
+  border-radius: 4px;
+}
+
+.product-info__city-indicator strong {
+  color: var(--color-text, #333);
+  font-weight: 600;
+}
+
+.product-info__city-indicator--unavailable {
+  background-color: rgb(239 68 68 / 0.1);
+  color: rgb(185 28 28);
+}
+
+.product-info__city-indicator--unavailable strong {
+  color: rgb(185 28 28);
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .city-modal__grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .city-banner {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

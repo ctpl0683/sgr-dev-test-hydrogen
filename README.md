@@ -18,6 +18,9 @@ A custom Shopify Hydrogen storefront with advanced features including wishlist f
    - [4.6 ❤️ Wishlist Functionality](#-46-️-wishlist-functionality)
    - [4.7 Yotpo Reviews Integration](#-47-yotpo-reviews-integration)
    - [4.8 💬 Tidio Live Chat](#-48-tidio-live-chat-integration)
+   - [4.9 🏙️ City-Based Pricing](#-49-️-city-based-pricing)
+   - [4.10 📍 Pincode Verification](#-410--pincode-verification)
+   - [4.11 🏷️ Tier Pricing Discounts](#-411-️-tier-pricing-discounts)
 5. [API Routes Reference](#-api-routes-reference)
 6. [Deployment Guide](#-deployment-guide)
 7. [Troubleshooting](#-troubleshooting)
@@ -644,6 +647,371 @@ The Tidio widget is loaded via a JavaScript snippet added to the root layout. Th
 
 ---
 
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   🏙️ 4.9 CITY-BASED PRICING                                                  ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+### 📌 Overview
+
+City-based pricing system that allows products to have different prices based on the customer's selected city. Products can have variants for different cities (e.g., Bangalore, Chennai, Mumbai), and the storefront automatically displays the correct price based on the user's city selection.
+
+### 🎯 Requirements
+
+- Display different prices for products based on customer's selected city
+- Allow customers to select their city via a global city selector
+- Persist city selection across sessions using cookies
+- Show city-specific prices on PLP (Product Listing Page) and PDP (Product Detail Page)
+- Handle products that are unavailable in certain cities (show as faded/unclickable)
+- Sync URL with selected city for correct variant selection
+
+### 📁 Files Created/Modified
+
+| File | Description |
+|------|-------------|
+| `app/context/CityContext.jsx` | React context for city selection state |
+| `app/lib/city-variant-resolver.js` | Utility functions for resolving city variants |
+| `app/components/CitySelector.jsx` | City selection dropdown component |
+| `app/components/layout/Header.jsx` | Header with city selector integration |
+| `app/components/product/ProductCard.jsx` | Product card with city pricing |
+| `app/components/product/ProductInfo.jsx` | Product info with city availability |
+| `app/components/ProductItem.jsx` | Product item with city pricing |
+| `app/routes/($locale).products.$handle.jsx` | PDP with city variant resolution |
+| `app/styles/components/city.css` | City selector and indicator styles |
+| `app/styles/components/product-card.css` | Unavailable state styles |
+
+### ⚙️ Shopify Configuration
+
+**Product Setup:**
+1. Create product variants with a "City" option
+2. Each variant should have a city name (e.g., "Bangalore", "Chennai", "Mumbai")
+3. Set different prices for each city variant
+
+**Example Variant Structure:**
+```
+Product: Premium Coffee
+├── Variant: Bangalore - ₹499
+├── Variant: Chennai - ₹549
+└── Variant: Mumbai - ₹599
+```
+
+### 💡 Solution Approach
+
+1. **City Context**: Global React context manages selected city state
+2. **Cookie Persistence**: City selection stored in `selected_city` cookie
+3. **SSR Support**: City resolved from cookie in loader for no-flicker experience
+4. **Client Reactivity**: City changes trigger immediate price updates
+5. **URL Sync**: URL params updated when city changes on PDP
+6. **Unavailable Handling**: Products without city variant shown as unavailable
+
+### ✅ Features
+
+- ✅ Global city selector in header
+- ✅ City-specific pricing on PLP and PDP
+- ✅ Cookie-based persistence across sessions
+- ✅ SSR-compatible (no price flicker on load)
+- ✅ URL sync for correct add-to-cart variant
+- ✅ Unavailable products shown faded/unclickable
+- ✅ "Unavailable in your city" messaging
+- ✅ City indicator on product pages
+
+### 🔧 Replication Steps
+
+1. **Create City Context:**
+   ```jsx
+   // app/context/CityContext.jsx
+   export const CITY_OPTION_NAME = 'City';
+   export const DEFAULT_CITY = 'bangalore';
+   export const AVAILABLE_CITIES = [
+     { value: 'bangalore', label: 'Bangalore' },
+     { value: 'chennai', label: 'Chennai' },
+     // Add more cities
+   ];
+   ```
+
+2. **Create City Variant Resolver:**
+   - `findVariantByCity()` - Find variant matching city
+   - `hasCityVariants()` - Check if product has city option
+   - `resolveVariantForCity()` - SSR-compatible resolution
+
+3. **Update Product Components:**
+   - Use `useCity()` hook to get selected city
+   - Call `findVariantByCity()` to get correct variant
+   - Handle `isCityUnavailable` state
+
+4. **Add City Selector to Header:**
+   - Dropdown with available cities
+   - Updates context and cookie on change
+
+### 📚 References
+
+- [Shopify Product Variants](https://shopify.dev/docs/api/storefront/latest/objects/ProductVariant)
+- [React Context API](https://react.dev/reference/react/useContext)
+
+---
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   📍 4.10 PINCODE VERIFICATION                                               ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+### 📌 Overview
+
+Pincode/ZIP code verification system that allows customers to check delivery availability before adding products to cart. The system validates pincodes against a serviceability database and shows delivery status.
+
+### 🎯 Requirements
+
+- Allow customers to enter their pincode on PDP
+- Check if delivery is available for the entered pincode
+- Show delivery availability status (serviceable/not serviceable)
+- Persist pincode across sessions
+- Provide clear feedback on delivery status
+
+### 📁 Files Created/Modified
+
+| File | Description |
+|------|-------------|
+| `app/components/pincode/PincodeChecker.jsx` | Main pincode input component |
+| `app/components/pincode/index.js` | Component exports |
+| `app/routes/api.pincode-check.jsx` | API route for pincode validation |
+| `app/styles/components/pincode.css` | Pincode checker styles |
+| `app/components/product/ProductInfo.jsx` | PDP integration |
+
+### ⚙️ Configuration
+
+**Pincode Data Source Options:**
+
+1. **Metafield-based** (Recommended for small datasets):
+   - Store serviceable pincodes in shop metafield
+   - JSON format: `{"pincodes": ["560001", "560002", ...]}`
+
+2. **External API** (For large datasets):
+   - Integrate with logistics partner API
+   - Real-time serviceability check
+
+3. **Static JSON** (For development/testing):
+   ```javascript
+   const SERVICEABLE_PINCODES = {
+     '560001': { city: 'Bangalore', deliveryDays: 2 },
+     '600001': { city: 'Chennai', deliveryDays: 3 },
+   };
+   ```
+
+### 💡 Solution Approach
+
+1. **PincodeChecker Component**: Input field with check button
+2. **API Route**: Server-side validation against pincode database
+3. **Status Display**: Shows serviceable/not serviceable with delivery info
+4. **Cookie Storage**: Remembers last checked pincode
+
+### ✅ Features
+
+- ✅ Pincode input with validation
+- ✅ Real-time serviceability check
+- ✅ Delivery time estimation
+- ✅ City name display for valid pincodes
+- ✅ Error handling for invalid pincodes
+- ✅ Loading state during check
+- ✅ Persistent pincode storage
+
+### 💡 Usage
+
+```jsx
+import { PincodeChecker } from '~/components/pincode';
+
+// In ProductInfo component
+<PincodeChecker 
+  className="product-info__pincode" 
+  productId={product.id}
+/>
+```
+
+### 🔧 Replication Steps
+
+1. **Create API Route:**
+   ```jsx
+   // app/routes/api.pincode-check.jsx
+   export async function loader({ request }) {
+     const url = new URL(request.url);
+     const pincode = url.searchParams.get('pincode');
+     
+     // Validate against your pincode database
+     const result = await checkPincodeServiceability(pincode);
+     
+     return json(result);
+   }
+   ```
+
+2. **Create PincodeChecker Component:**
+   - Input field for pincode
+   - Check button to trigger validation
+   - Status display area
+
+3. **Integrate in PDP:**
+   - Add component below Add to Cart button
+   - Pass product ID for analytics
+
+### 📚 References
+
+- [India Post Pincode API](https://www.indiapost.gov.in/)
+- [Logistics Partner APIs](https://developers.delhivery.com/)
+
+---
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║   🏷️ 4.11 TIER PRICING DISCOUNTS                                             ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+### 📌 Overview
+
+Tier-based pricing discount system using Shopify Functions. Provides automatic quantity-based discounts for products based on the customer's selected city. When customers add multiple items of the same city variant, they receive progressive discounts.
+
+### 🎯 Requirements
+
+- Apply automatic discounts based on quantity thresholds
+- Support city-specific discount rules
+- Display discount allocations in cart drawer
+- Allow merchants to configure discount tiers via admin UI
+- Show discount savings at checkout
+
+### 📁 Files Created/Modified
+
+| File | Description |
+|------|-------------|
+| `extensions/tier-pricing-discount/` | Shopify Function extension |
+| `extensions/tier-pricing-discount/src/run.rs` | Rust discount logic |
+| `extensions/tier-pricing-discount/src/run.graphql` | Input query |
+| `app/routes/admin.tier-pricing.jsx` | Admin UI for discount management |
+| `app/routes/api.admin.discounts.jsx` | Admin API for CRUD operations |
+| `app/lib/admin.server.js` | Admin API client |
+| `app/lib/fragments.js` | Cart fragments with discountAllocations |
+| `app/components/CartLineItem.jsx` | Cart line with discount display |
+| `app/styles/components/cart.css` | Discount display styles |
+
+### ⚙️ Shopify Configuration
+
+**1. Deploy the Shopify Function:**
+```bash
+cd extensions/tier-pricing-discount
+npm run build
+cd ../..
+npx shopify app deploy
+```
+
+**2. Create Automatic Discount:**
+- Go to Shopify Admin > Discounts
+- Create new "Automatic discount"
+- Select "Tier Pricing Discount" function
+- Configure title and start date
+
+### 💡 Solution Approach
+
+**Discount Function Logic (Rust):**
+1. Scan cart lines for products with city variants
+2. Extract city from variant title (e.g., "Default Title / bangalore")
+3. Group quantities by city
+4. Apply tier-based percentage discount:
+   - 2+ items: 5% off
+   - 5+ items: 10% off
+   - 10+ items: 15% off
+
+**Admin UI:**
+- React-based configuration page
+- CRUD operations for discount rules
+- City-specific tier configuration
+- Start date scheduling
+
+### ✅ Features
+
+- ✅ Automatic quantity-based discounts
+- ✅ City-specific discount rules
+- ✅ Configurable tier thresholds
+- ✅ Admin UI for merchant configuration
+- ✅ Discount display in cart drawer
+- ✅ Discount reflected at checkout
+- ✅ Start date scheduling
+- ✅ Multiple discount rules support
+
+### 🔧 Tier Configuration
+
+**Default Tiers (hardcoded in function):**
+```rust
+const TIER_RULES: [(i32, f64); 3] = [
+    (2, 5.0),   // 2+ items = 5% off
+    (5, 10.0),  // 5+ items = 10% off
+    (10, 15.0), // 10+ items = 15% off
+];
+```
+
+**Supported Cities:**
+```rust
+const SUPPORTED_CITIES: [&str; 5] = [
+    "bangalore", "chennai", "hyderabad", "mumbai", "delhi"
+];
+```
+
+### 🔧 Replication Steps
+
+1. **Create Shopify Function Extension:**
+   ```bash
+   npx shopify app generate extension --type product_discounts
+   ```
+
+2. **Implement Discount Logic:**
+   - Parse cart lines from input
+   - Extract city from variant titles
+   - Calculate applicable discount tier
+   - Return discount allocations
+
+3. **Create Admin UI:**
+   - Route: `/admin/tier-pricing`
+   - Fetch available discount functions
+   - CRUD operations via Admin API
+
+4. **Update Cart Fragments:**
+   ```graphql
+   fragment CartLine on CartLine {
+     # ... existing fields
+     discountAllocations {
+       discountedAmount { ...Money }
+       ... on CartAutomaticDiscountAllocation {
+         title
+       }
+     }
+   }
+   ```
+
+5. **Display in Cart:**
+   - Map over `line.discountAllocations`
+   - Show discount title and amount
+
+### 📚 References
+
+- [Shopify Functions](https://shopify.dev/docs/apps/functions)
+- [Product Discount API](https://shopify.dev/docs/api/functions/reference/product-discounts)
+- [Rust for Shopify Functions](https://shopify.dev/docs/apps/functions/programming-languages/rust)
+
+### ⚠️ Issues Encountered
+
+1. **GraphQL Schema Mismatch**
+   - Problem: IDE showed lint errors for function GraphQL
+   - Cause: IDE using Storefront API schema instead of Functions schema
+   - Resolution: Errors are false positives, function works correctly
+
+2. **Variant Title Parsing**
+   - Problem: City not extracted from "Default Title / bangalore"
+   - Resolution: Split title by " / " and check all parts for city match
+
+3. **Discount Not Showing in Cart**
+   - Problem: `discountAllocations` was empty in cart
+   - Resolution: Added `discountAllocations` to cart GraphQL fragments
+
+---
+
 ## 🛣️ API Routes Reference
 
 | Route | Method | Description |
@@ -653,6 +1021,11 @@ The Tidio widget is loaded via a JavaScript snippet added to the root layout. Th
 | `/api/wishlist` | GET | Get customer wishlist |
 | `/api/wishlist` | POST | Add/remove from wishlist |
 | `/api/wishlist-products` | GET | Get wishlist product details |
+| `/api/pincode-check` | GET | Check pincode serviceability |
+| `/api/admin/discounts` | GET | List tier pricing discounts |
+| `/api/admin/discounts` | POST | Create tier pricing discount |
+| `/api/admin/discounts` | PUT | Update tier pricing discount |
+| `/api/admin/discounts` | DELETE | Delete tier pricing discount |
 
 ---
 
@@ -712,6 +1085,27 @@ rm -rf node_modules/.vite
 npm run build
 ```
 
+#### 5. City pricing not updating
+- **Check**: Product has "City" option in variants
+- **Check**: Variant names match supported cities (case-insensitive)
+- **Check**: Cookie `selected_city` is being set correctly
+
+#### 6. Pincode check not working
+- **Check**: API route `/api/pincode-check` is accessible
+- **Check**: Pincode database/metafield is configured
+- **Check**: Network requests in browser DevTools
+
+#### 7. Tier discounts not applying
+- **Check**: Shopify Function is deployed (`npx shopify app deploy`)
+- **Check**: Automatic discount is created in Shopify Admin
+- **Check**: Cart has sufficient quantity to trigger tier
+- **Check**: Product variants contain city in title
+
+#### 8. Discounts not showing in cart
+- **Check**: `discountAllocations` is in cart GraphQL fragment
+- **Check**: Console logs show discount data
+- **Rebuild**: Clear cache and restart dev server
+
 ---
 
 ## 📄 License
@@ -726,4 +1120,4 @@ This project is proprietary and confidential.
 
 ---
 
-*Last updated: February 2026*
+*Last updated: March 2026*

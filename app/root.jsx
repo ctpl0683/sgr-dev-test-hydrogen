@@ -23,9 +23,18 @@ import themeStyles from '~/styles/theme/index.css?url';
 import componentStyles from '~/styles/components/index.css?url';
 import appStyles from '~/styles/app.css?url';
 import tailwindCss from './styles/tailwind.css?url';
+import cityStyles from '~/styles/components/city.css?url';
+import tierPricingStyles from '~/styles/components/tier-pricing.css?url';
+import pincodeStyles from '~/styles/components/pincode.css?url';
 import {PageLayout} from './components/PageLayout';
 import {ThemeSettingsProvider} from '~/context/ThemeSettingsContext';
 import {WishlistProvider} from '~/context/WishlistContext';
+import {CityProvider, getCityFromRequest} from '~/context/CityContext';
+import {
+  SUPPORTED_CITIES_QUERY,
+  parseSupportedCitiesFromMetaobject,
+  getDefaultCityFromMetaobject,
+} from '~/graphql/storefront/SupportedCitiesQuery';
 import {AnnouncementBar} from '~/components/AnnouncementBar';
 import {ThemeStyles} from '~/components/ThemeStyles';
 
@@ -127,10 +136,13 @@ export async function loader(args) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  * @param {Route.LoaderArgs}
  */
-async function loadCriticalData({context}) {
+async function loadCriticalData({context, request}) {
   const {storefront} = context;
 
-  const [header, themeSettingsData, announcementData, socialLinksData] = await Promise.all([
+  // Get city from cookie for SSR (prevents flicker)
+  const selectedCity = getCityFromRequest(request);
+
+  const [header, themeSettingsData, announcementData, socialLinksData, supportedCitiesData] = await Promise.all([
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
@@ -147,13 +159,24 @@ async function loadCriticalData({context}) {
     storefront.query(SOCIAL_LINKS_QUERY, {
       cache: storefront.CacheLong(),
     }).catch(() => ({metaobject: null})),
+    // Supported cities from metaobject
+    storefront.query(SUPPORTED_CITIES_QUERY, {
+      cache: storefront.CacheLong(),
+    }).catch(() => ({metaobject: null})),
   ]);
+
+  // Parse supported cities from metaobject
+  const supportedCities = parseSupportedCitiesFromMetaobject(supportedCitiesData?.metaobjects);
+  const defaultCity = getDefaultCityFromMetaobject(supportedCitiesData?.metaobjects);
 
   return {
     header,
     themeSettings: themeSettingsData?.metaobject || null,
     announcement: announcementData?.metaobject || null,
     socialLinks: socialLinksData?.metaobject || null,
+    selectedCity,
+    supportedCities,
+    defaultCity,
   };
 }
 
@@ -219,6 +242,9 @@ export function Layout({children}) {
         <link rel="stylesheet" href={themeStyles}></link>
         <link rel="stylesheet" href={componentStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <link rel="stylesheet" href={cityStyles}></link>
+        <link rel="stylesheet" href={tierPricingStyles}></link>
+        <link rel="stylesheet" href={pincodeStyles}></link>
         <Meta />
         <Links />
       </head>
@@ -289,31 +315,37 @@ export default function App() {
   }
 
   return (
-    <ThemeSettingsProvider
-      settings={data.themeSettings}
-      announcement={data.announcement}
-      socialLinks={data.socialLinks}
+    <CityProvider
+      initialCity={data.selectedCity}
+      cities={data.supportedCities}
+      defaultCity={data.defaultCity}
     >
-      <Suspense fallback={<WishlistProviderFallback data={data} />}>
-        <Await resolve={data.customerId} errorElement={<WishlistProviderFallback data={data} />}>
-          {(customerId) => (
-            <WishlistProvider customerId={customerId}>
-              <ThemeStyles />
-              <Analytics.Provider
-                cart={data.cart}
-                shop={data.shop}
-                consent={data.consent}
-              >
-                <AnnouncementBar />
-                <PageLayout {...data}>
-                  <Outlet />
-                </PageLayout>
-              </Analytics.Provider>
-            </WishlistProvider>
-          )}
-        </Await>
-      </Suspense>
-    </ThemeSettingsProvider>
+      <ThemeSettingsProvider
+        settings={data.themeSettings}
+        announcement={data.announcement}
+        socialLinks={data.socialLinks}
+      >
+        <Suspense fallback={<WishlistProviderFallback data={data} />}>
+          <Await resolve={data.customerId} errorElement={<WishlistProviderFallback data={data} />}>
+            {(customerId) => (
+              <WishlistProvider customerId={customerId}>
+                <ThemeStyles />
+                <Analytics.Provider
+                  cart={data.cart}
+                  shop={data.shop}
+                  consent={data.consent}
+                >
+                  <AnnouncementBar />
+                  <PageLayout {...data}>
+                    <Outlet />
+                  </PageLayout>
+                </Analytics.Provider>
+              </WishlistProvider>
+            )}
+          </Await>
+        </Suspense>
+      </ThemeSettingsProvider>
+    </CityProvider>
   );
 }
 
@@ -322,19 +354,25 @@ export default function App() {
  */
 function WishlistProviderFallback({data}) {
   return (
-    <WishlistProvider customerId={null}>
-      <ThemeStyles />
-      <Analytics.Provider
-        cart={data.cart}
-        shop={data.shop}
-        consent={data.consent}
-      >
-        <AnnouncementBar />
-        <PageLayout {...data}>
-          <Outlet />
-        </PageLayout>
-      </Analytics.Provider>
-    </WishlistProvider>
+    <CityProvider
+      initialCity={data.selectedCity}
+      cities={data.supportedCities}
+      defaultCity={data.defaultCity}
+    >
+      <WishlistProvider customerId={null}>
+        <ThemeStyles />
+        <Analytics.Provider
+          cart={data.cart}
+          shop={data.shop}
+          consent={data.consent}
+        >
+          <AnnouncementBar />
+          <PageLayout {...data}>
+            <Outlet />
+          </PageLayout>
+        </Analytics.Provider>
+      </WishlistProvider>
+    </CityProvider>
   );
 }
 

@@ -1,4 +1,5 @@
 import {CartForm} from '@shopify/hydrogen';
+import {useCity} from '~/context/CityContext';
 
 /**
  * @param {{
@@ -7,6 +8,7 @@ import {CartForm} from '@shopify/hydrogen';
  *   disabled?: boolean;
  *   lines: Array<OptimisticCartLineInput>;
  *   onClick?: () => void;
+ *   includeCity?: boolean;
  * }}
  */
 export function AddToCartButton({
@@ -15,9 +17,23 @@ export function AddToCartButton({
   disabled,
   lines,
   onClick,
+  includeCity = true,
 }) {
+  const {selectedCity} = useCity();
+
+  // Add city attribute to each line for cart consistency and checkout
+  const linesWithAttributes = includeCity
+    ? lines.map((line) => ({
+        ...line,
+        attributes: [
+          ...(line.attributes || []),
+          {key: 'selected_city', value: selectedCity},
+        ],
+      }))
+    : lines;
+
   return (
-    <CartForm route="/cart" inputs={{lines}} action={CartForm.ACTIONS.LinesAdd}>
+    <CartForm route="/cart" inputs={{lines: linesWithAttributes}} action={CartForm.ACTIONS.LinesAdd}>
       {(fetcher) => (
         <>
           <input

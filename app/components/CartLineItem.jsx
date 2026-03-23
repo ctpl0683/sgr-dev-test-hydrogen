@@ -1,8 +1,9 @@
-import {CartForm, Image} from '@shopify/hydrogen';
+import {CartForm, Image, Money} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
+import {Tag} from 'lucide-react';
 
 /**
  * A single line item in the cart. It displays the product image, title, price.
@@ -13,10 +14,23 @@ import {useAside} from './Aside';
  * }}
  */
 export function CartLineItem({layout, line}) {
-  const {id, merchandise} = line;
+  const {id, merchandise, attributes} = line;
   const {product, title, image, selectedOptions} = merchandise;
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const {close} = useAside();
+
+  // DEBUG: Log cart line data including discounts
+  if (typeof window !== 'undefined') {
+    console.log(`[CartLineItem] ${product.title}:`, {
+      lineId: id,
+      quantity: line.quantity,
+      variantTitle: title,
+      attributes,
+      selectedCity: attributes?.find(a => a.key === 'selected_city')?.value,
+      discountAllocations: line.discountAllocations,
+      cost: line.cost,
+    });
+  }
 
   return (
     <li key={id} className="cart-line">
@@ -55,6 +69,22 @@ export function CartLineItem({layout, line}) {
             </li>
           ))}
         </ul>
+        {/* Display discount allocations */}
+        {line.discountAllocations?.length > 0 && (
+          <div className="cart-line__discounts">
+            {line.discountAllocations.map((allocation, index) => (
+              <div key={index} className="cart-line__discount">
+                <Tag size={12} />
+                <span className="cart-line__discount-title">
+                  {allocation.title || allocation.code || 'Discount'}
+                </span>
+                <span className="cart-line__discount-amount">
+                  (-<Money data={allocation.discountedAmount} />)
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="cart-line__price">
           <ProductPrice price={line?.cost?.totalAmount} />
         </div>

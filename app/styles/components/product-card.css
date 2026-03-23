@@ -127,6 +127,34 @@
   opacity: 0.5;
 }
 
+/* ==========================================================================
+   UNAVAILABLE STATE (City not available)
+   ========================================================================== */
+
+.product-card--unavailable {
+  opacity: 0.5;
+}
+
+.product-card--unavailable .product-card__link--disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.product-card--unavailable .product-card__image {
+  filter: grayscale(50%);
+}
+
+.product-card__badge--unavailable {
+  background-color: rgb(var(--color-foreground-rgb) / 0.7);
+  color: var(--color-background);
+}
+
+.product-card__unavailable-text {
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.7;
+  font-style: italic;
+}
+
 /* Product Item (legacy support) */
 .product-item {
   display: block;
@@ -135,12 +163,16 @@
   position: relative;
 }
 
+.product-item__media {
+  position: relative;
+  margin-bottom: var(--spacing-4);
+}
+
 .product-item img {
   width: 100%;
   height: auto;
   aspect-ratio: 3/4;
   object-fit: cover;
-  margin-bottom: var(--spacing-4);
 }
 
 .product-item h4 {
@@ -156,4 +188,38 @@
   text-align: center;
   font-size: var(--font-size-paragraph);
   opacity: 0.7;
+}
+
+/* Product Item Unavailable State */
+.product-item--unavailable {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.product-item--unavailable img {
+  filter: grayscale(50%);
+}
+
+.product-item__badge {
+  position: absolute;
+  top: var(--spacing-3);
+  left: var(--spacing-3);
+  z-index: 3;
+  padding: var(--spacing-1) var(--spacing-3);
+  font-family: var(--font-body-family);
+  font-size: 0.625rem;
+  font-weight: var(--font-body-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+}
+
+.product-item__badge--unavailable {
+  background-color: rgb(var(--color-foreground-rgb) / 0.7);
+  color: var(--color-background);
+}
+
+.product-item__unavailable-text {
+  font-size: var(--font-size-paragraph-small);
+  opacity: 0.7;
+  font-style: italic;
 }

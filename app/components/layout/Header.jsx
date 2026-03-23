@@ -3,6 +3,7 @@ import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {useAnalytics, useOptimisticCart, Image} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {useThemeSettings} from '~/context/ThemeSettingsContext';
+import {CitySelectorCompact} from '~/components/city/CitySelector';
 import clsx from 'clsx';
 import {
   Search,
@@ -30,7 +31,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     <header
       className={clsx(
         'header',
-        isHomepage && 'header--transparent'
+        isHomepage
       )}
     >
       <div className="header__inner">
@@ -68,6 +69,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
 
         {/* Actions - Right */}
         <div className="header__actions">
+          <CitySelectorCompact />
           <SearchToggle />
           <AccountLink isLoggedIn={isLoggedIn} />
           <CartToggle cart={cart} />

@@ -4,6 +4,9 @@ import {AddToCartButton} from '~/components/AddToCartButton';
 import {useAside} from '~/components/Aside';
 import {WishlistButton} from '~/components/wishlist';
 import {YotpoStarRatingSummary} from '~/components/yotpo';
+import {useCity} from '~/context/CityContext';
+import {MapPin} from 'lucide-react';
+import {PincodeChecker} from '~/components/pincode/PincodeChecker';
 
 /**
  * ProductInfo Component
@@ -13,12 +16,15 @@ import {YotpoStarRatingSummary} from '~/components/yotpo';
  *   product: ProductFragment;
  *   selectedVariant: ProductVariantFragment;
  *   productOptions: MappedProductOptions[];
+ *   hasCityOption?: boolean;
+ *   isCityUnavailable?: boolean;
  * }}
  */
-export function ProductInfo({product, selectedVariant, productOptions}) {
+export function ProductInfo({product, selectedVariant, productOptions, hasCityOption = false, isCityUnavailable = false}) {
   const {title, vendor, descriptionHtml} = product;
   const navigate = useNavigate();
   const {open} = useAside();
+  const {getCityLabel} = useCity();
 
   return (
     <div className="product-info">
@@ -36,17 +42,31 @@ export function ProductInfo({product, selectedVariant, productOptions}) {
       {/* Yotpo Star Rating */}
       <YotpoStarRatingSummary product={product} />
 
-      {/* Price */}
-      <div className="product-info__price">
-        {selectedVariant?.compareAtPrice && (
-          <s className="product-info__compare-price">
-            <Money data={selectedVariant.compareAtPrice} />
-          </s>
-        )}
-        {selectedVariant?.price && (
-          <Money data={selectedVariant.price} />
-        )}
-      </div>
+      {/* City Indicator - shows when product has city-based pricing */}
+      {hasCityOption && (
+        <div className={`product-info__city-indicator ${isCityUnavailable ? 'product-info__city-indicator--unavailable' : ''}`}>
+          <MapPin size={14} />
+          {isCityUnavailable ? (
+            <span>Not available in <strong>{getCityLabel()}</strong></span>
+          ) : (
+            <span>Price for <strong>{getCityLabel()}</strong></span>
+          )}
+        </div>
+      )}
+
+      {/* Price - hidden when city unavailable */}
+      {!isCityUnavailable && (
+        <div className="product-info__price">
+          {selectedVariant?.compareAtPrice && (
+            <s className="product-info__compare-price">
+              <Money data={selectedVariant.compareAtPrice} />
+            </s>
+          )}
+          {selectedVariant?.price && (
+            <Money data={selectedVariant.price} />
+          )}
+        </div>
+      )}
 
       {/* Product Options */}
       <div className="product-info__options">
@@ -116,7 +136,7 @@ export function ProductInfo({product, selectedVariant, productOptions}) {
       {/* Add to Cart */}
       <div className="product-info__actions">
         <AddToCartButton
-          disabled={!selectedVariant || !selectedVariant.availableForSale}
+          disabled={!selectedVariant || !selectedVariant.availableForSale || isCityUnavailable}
           onClick={() => open('cart')}
           lines={
             selectedVariant
@@ -128,9 +148,18 @@ export function ProductInfo({product, selectedVariant, productOptions}) {
               : []
           }
         >
-          {selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out'}
+          {isCityUnavailable 
+            ? 'Unavailable in Your City' 
+            : (selectedVariant?.availableForSale ? 'Add to Cart' : 'Sold Out')
+          }
         </AddToCartButton>
       </div>
+
+      {/* Pincode Checker */}
+      <PincodeChecker 
+        className="product-info__pincode" 
+        productId={product.id}
+      />
 
       {/* Description */}
       {descriptionHtml && (

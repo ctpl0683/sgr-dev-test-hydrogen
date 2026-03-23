@@ -14,6 +14,24 @@ export function CartMain({layout, cart: originalCart}) {
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
 
+  // DEBUG: Log cart data to check for discounts
+  if (typeof window !== 'undefined' && cart) {
+    console.log('[CartMain] Cart data:', {
+      totalQuantity: cart.totalQuantity,
+      cost: cart.cost,
+      discountCodes: cart.discountCodes,
+      discountAllocations: cart.discountAllocations,
+      lines: cart.lines?.nodes?.map(line => ({
+        id: line.id,
+        quantity: line.quantity,
+        merchandiseTitle: line.merchandise?.title,
+        variantTitle: line.merchandise?.product?.title,
+        discountAllocations: line.discountAllocations,
+        cost: line.cost,
+      })),
+    });
+  }
+
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const withDiscount =
     cart &&

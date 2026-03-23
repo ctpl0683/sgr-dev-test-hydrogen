@@ -1,4 +1,5 @@
-import {useLoaderData} from 'react-router';
+import {useLoaderData, useNavigate, useSearchParams} from 'react-router';
+import {useEffect} from 'react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -10,6 +11,13 @@ import {
 import {ProductGallery, ProductInfo} from '~/components/product';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {YotpoReviewsWidget} from '~/components/yotpo';
+import {getCityFromRequest, useCity, CITY_OPTION_NAME} from '~/context/CityContext';
+import {
+  resolveVariantForCity,
+  hasCityVariants,
+  filterOutCityOption,
+  findVariantByCity,
+} from '~/lib/city-variant-resolver';
 
 /**
  * @type {Route.MetaFunction}
@@ -50,6 +58,10 @@ async function loadCriticalData({context, params, request}) {
     throw new Error('Expected product handle to be defined');
   }
 
+  // Get city from cookie for SSR variant resolution (prevents flicker)
+  const selectedCity = getCityFromRequest(request);
+  const url = new URL(request.url);
+
   const [{product}] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
@@ -64,8 +76,19 @@ async function loadCriticalData({context, params, request}) {
   // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {handle, data: product});
 
+  // Resolve variant based on city (SSR - no flicker)
+  const {variant: cityResolvedVariant, resolvedByCity, hasCityOption} = resolveVariantForCity(
+    product,
+    selectedCity,
+    url.searchParams
+  );
+
   return {
     product,
+    selectedCity,
+    cityResolvedVariant,
+    resolvedByCity,
+    hasCityOption,
   };
 }
 
@@ -84,13 +107,50 @@ function loadDeferredData({context, params}) {
 
 export default function Product() {
   /** @type {LoaderReturnData} */
-  const {product} = useLoaderData();
+  const {product, cityResolvedVariant, hasCityOption} = useLoaderData();
+  const {selectedCity, cityOptionName} = useCity();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  // Resolve variant based on current city from context (client-side reactive)
+  // This ensures price updates when city changes without page reload
+  const productHasCityOption = hasCityVariants(product, cityOptionName);
+  const clientCityVariant = productHasCityOption 
+    ? findVariantByCity(product, selectedCity, cityOptionName) 
+    : null;
+
+  // Check if product is unavailable for selected city
+  // A product is unavailable if it has city variants but none match the selected city
+  const isCityUnavailable = productHasCityOption && !clientCityVariant;
+
+  // Use client-resolved city variant if available, otherwise fall back to SSR-resolved
+  const baseVariant = clientCityVariant || cityResolvedVariant || product.selectedOrFirstAvailableVariant;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
-    product.selectedOrFirstAvailableVariant,
+    baseVariant,
     getAdjacentAndFirstAvailableVariants(product),
   );
+
+  // Sync URL with selected city when city changes
+  // This ensures the correct variant is added to cart
+  useEffect(() => {
+    if (!productHasCityOption || !selectedCity) return;
+    
+    const urlCity = searchParams.get(CITY_OPTION_NAME);
+    const normalizedSelectedCity = selectedCity.toLowerCase();
+    const normalizedUrlCity = urlCity?.toLowerCase();
+    
+    // Only update URL if city in URL differs from selected city
+    if (normalizedUrlCity !== normalizedSelectedCity) {
+      const newParams = new URLSearchParams(searchParams);
+      newParams.set(CITY_OPTION_NAME, selectedCity);
+      navigate(`?${newParams.toString()}`, {
+        replace: true,
+        preventScrollReset: true,
+      });
+    }
+  }, [selectedCity, productHasCityOption, searchParams, navigate]);
 
   // Sets the search param to the selected variant without navigation
   // only when no search params are set in the url
@@ -101,6 +161,12 @@ export default function Product() {
     ...product,
     selectedOrFirstAvailableVariant: selectedVariant,
   });
+
+  // Filter out city option from display if product has city variants
+  // City is selected via the global CitySelector, not per-product
+  const displayOptions = productHasCityOption
+    ? filterOutCityOption(productOptions)
+    : productOptions;
 
   // Get all product images
   const images = product.images?.nodes || [];
@@ -119,7 +185,9 @@ export default function Product() {
           <ProductInfo
             product={product}
             selectedVariant={selectedVariant}
-            productOptions={productOptions}
+            productOptions={displayOptions}
+            hasCityOption={hasCityOption}
+            isCityUnavailable={isCityUnavailable}
           />
         </div>
       </div>
@@ -226,6 +294,11 @@ const PRODUCT_FRAGMENT = `#graphql
     }
     adjacentVariants (selectedOptions: $selectedOptions) {
       ...ProductVariant
+    }
+    variants(first: 50) {
+      nodes {
+        ...ProductVariant
+      }
     }
     seo {
       description

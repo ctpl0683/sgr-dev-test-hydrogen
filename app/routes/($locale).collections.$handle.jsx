@@ -148,6 +148,28 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
         ...MoneyProductItem
       }
     }
+    options {
+      name
+      optionValues {
+        name
+      }
+    }
+    variants(first: 50) {
+      nodes {
+        id
+        availableForSale
+        selectedOptions {
+          name
+          value
+        }
+        price {
+          ...MoneyProductItem
+        }
+        compareAtPrice {
+          ...MoneyProductItem
+        }
+      }
+    }
   }
 `;
 
